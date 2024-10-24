@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface CandidateService {
-    void createCandidate(CandidatePostDto candidatePostDto);
+    void saveCandidate(CandidatePostDto candidatePostDto);
 
 }

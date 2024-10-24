@@ -17,7 +17,7 @@ public class CandidateServiceImpl implements CandidateService {
     private CandidateMapper candidateMapper;
 
     @Override
-    public void createCandidate(CandidatePostDto candidatePostDto) {
+    public void saveCandidate(CandidatePostDto candidatePostDto) {
         CandidateEntity newCandidate = candidateMapper.toCandidateEntity(candidatePostDto);
 
         candidateRepository.save(newCandidate);
