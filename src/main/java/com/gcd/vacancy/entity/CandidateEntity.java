@@ -3,6 +3,9 @@ package com.gcd.vacancy.entity;
 import com.gcd.vacancy.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "candidate")
@@ -29,4 +32,8 @@ public class CandidateEntity {
 
     @Enumerated(EnumType.STRING)
     private final AccountType accountType = AccountType.CANDIDATE;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 }
