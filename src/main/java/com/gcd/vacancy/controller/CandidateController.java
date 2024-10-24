@@ -18,8 +18,8 @@ public class CandidateController {
     private CandidateService candidateService;
 
     @PostMapping
-    public ResponseEntity createCandidate(@RequestBody CandidatePostDto candidatePostDto) {
-        candidateService.createCandidate(candidatePostDto);
+    public ResponseEntity sendCandidate(@RequestBody CandidatePostDto candidatePostDto) {
+        candidateService.saveCandidate(candidatePostDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
