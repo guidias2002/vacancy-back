@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CandidacyService {
 
-    CandidacyEntity applyToVacancy(Long vacancyId, Long candidateId);
+    ApplicationSentDto applyToVacancy(Long vacancyId, Long candidateId);
 }

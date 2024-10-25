@@ -4,6 +4,7 @@ import com.gcd.vacancy.dto.ApplicationSentDto;
 import com.gcd.vacancy.entity.CandidacyEntity;
 import com.gcd.vacancy.entity.CandidateEntity;
 import com.gcd.vacancy.entity.VacancyEntity;
+import com.gcd.vacancy.mapper.CandidacyMapper;
 import com.gcd.vacancy.repository.CandidacyRepository;
 import com.gcd.vacancy.repository.CandidateRepository;
 import com.gcd.vacancy.repository.VacancyRepository;
@@ -22,8 +23,11 @@ public class CandidacyServiceImpl implements CandidacyService {
     @Autowired
     private VacancyRepository vacancyRepository;
 
+    @Autowired
+    private CandidacyMapper candidacyMapper;
+
     @Override
-    public CandidacyEntity applyToVacancy(Long vacancyId, Long candidateId) {
+    public ApplicationSentDto applyToVacancy(Long vacancyId, Long candidateId) {
 
         VacancyEntity vacancy = vacancyRepository.findById(vacancyId)
                 .orElseThrow(() -> new IllegalArgumentException("Vacancy not found."));
@@ -31,16 +35,25 @@ public class CandidacyServiceImpl implements CandidacyService {
         CandidateEntity candidate = candidateRepository.findById(candidateId)
                 .orElseThrow(() -> new IllegalArgumentException("Candidate not found."));
 
+        boolean alreadyApplied = candidacyRepository.existsByCandidateIdAndVacancyId(candidateId, vacancyId);
+
+        if (alreadyApplied) {
+            throw new IllegalArgumentException("The candidate has already applied for this position.");
+        }
+
         CandidacyEntity newCandidacy = new CandidacyEntity();
 
-        newCandidacy.setVacancy_id(vacancy.getId());
-        newCandidacy.setCandidate_id(candidate.getId());
+        newCandidacy.setVacancyId(vacancy.getId());
+        newCandidacy.setCandidateId(candidate.getId());
         newCandidacy.setCandidateName(candidate.getName());
         newCandidacy.setVacancyTitle(vacancy.getTitle());
         newCandidacy.setEnterpriseName(vacancy.getName_enterprise());
 
         candidacyRepository.save(newCandidacy);
 
-        return newCandidacy;
+        ApplicationSentDto candidacyDto = candidacyMapper.toApplicationSentDto(newCandidacy);
+
+        return candidacyDto;
     }
+
 }
