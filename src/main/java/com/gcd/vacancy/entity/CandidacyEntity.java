@@ -19,12 +19,8 @@ public class CandidacyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "candidate_id", nullable = false)
-    private Long candidate_id;
-
-    @JoinColumn(name = "vacancy_id", nullable = false)
-    private Long vacancy_id;
-
+    private Long candidateId;
+    private Long vacancyId;
     private String candidateName;
     private String vacancyTitle;
     private String enterpriseName;

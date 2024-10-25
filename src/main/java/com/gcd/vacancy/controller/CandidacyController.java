@@ -1,5 +1,6 @@
 package com.gcd.vacancy.controller;
 
+import com.gcd.vacancy.dto.ApplicationSentDto;
 import com.gcd.vacancy.entity.CandidacyEntity;
 import com.gcd.vacancy.service.CandidacyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class CandidacyController {
     private CandidacyService candidacyService;
 
     @PostMapping
-    public ResponseEntity<CandidacyEntity> applyToVacancy(@RequestParam Long vacancyId, @RequestParam Long candidateId) {
-        CandidacyEntity candidacy = candidacyService.applyToVacancy(vacancyId, candidateId);
+    public ResponseEntity<ApplicationSentDto> applyToVacancy(@RequestParam Long vacancyId, @RequestParam Long candidateId) {
+        ApplicationSentDto candidacy = candidacyService.applyToVacancy(vacancyId, candidateId);
 
         return ResponseEntity.ok(candidacy);
     }

@@ -40,9 +40,8 @@ public class VacancyEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enterprise_id", nullable = false)
-    private EnterpriseEntity enterprise;
+    private Long enterpriseId;
 
 
 }

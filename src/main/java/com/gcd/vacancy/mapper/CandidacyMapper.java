@@ -8,5 +8,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface CandidacyMapper {
 
-//    ApplicationSentDto toApplicationSentDto(CandidacyEntity candidacyEntity);
+    ApplicationSentDto toApplicationSentDto(CandidacyEntity candidacyEntity);
 }

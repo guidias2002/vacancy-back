@@ -43,7 +43,7 @@ public class EnterpriseEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "enterpriseId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<VacancyEntity> vacancyEntityList;
 
 
