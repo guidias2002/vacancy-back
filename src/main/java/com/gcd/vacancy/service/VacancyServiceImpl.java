@@ -29,7 +29,7 @@ public class VacancyServiceImpl implements VacancyService{
                         .orElseThrow(() -> new IllegalArgumentException(("Enterprise not found.")));
 
         newVacancy.setName_enterprise(enterprise.getName());
-        newVacancy.setEnterprise(enterprise);
+        newVacancy.setEnterpriseId(enterprise.getId());
 
         vacancyRepository.save(newVacancy);
     }
