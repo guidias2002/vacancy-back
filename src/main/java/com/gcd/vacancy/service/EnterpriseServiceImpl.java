@@ -20,6 +20,8 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     public void saveEnterprise(EnterprisePostDto enterprisePostDto) {
         EnterpriseEntity newEterprise = enterpriseMapper.toEnterpriseEntity(enterprisePostDto);
 
+
+
         enterpriseRepository.save(newEterprise);
     }
 }
