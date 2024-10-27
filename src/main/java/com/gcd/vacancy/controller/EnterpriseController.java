@@ -1,14 +1,17 @@
 package com.gcd.vacancy.controller;
 
+import com.gcd.vacancy.dto.EnterpriseDto;
 import com.gcd.vacancy.dto.EnterprisePostDto;
+import com.gcd.vacancy.dto.EnterpriseWithListVacanciesDto;
+import com.gcd.vacancy.dto.VacancyDto;
 import com.gcd.vacancy.service.EnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/enterprise")
@@ -22,5 +25,19 @@ public class EnterpriseController {
         enterpriseService.saveEnterprise(enterprisePostDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{enterpriseId}")
+    public ResponseEntity<EnterpriseDto> getEnterpriseById(@PathVariable Long enterpriseId) {
+        EnterpriseDto enterprise = enterpriseService.getEnterpriseEntity(enterpriseId);
+
+        return ResponseEntity.ok(enterprise);
+    }
+
+    @GetMapping("/{enterpriseId}/vacanciesByEnterprise")
+    public ResponseEntity<EnterpriseWithListVacanciesDto> getVacanciesByEnterprise(@PathVariable Long enterpriseId) {
+        EnterpriseWithListVacanciesDto vacanciesByEnterprise = enterpriseService.getVacanciesByEnterprise(enterpriseId);
+
+        return ResponseEntity.ok(vacanciesByEnterprise);
     }
 }

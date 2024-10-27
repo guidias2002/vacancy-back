@@ -1,5 +1,7 @@
 package com.gcd.vacancy.service;
 
+import com.gcd.vacancy.dto.EnterpriseDto;
+import com.gcd.vacancy.dto.VacancyDto;
 import com.gcd.vacancy.dto.VacancyPostDto;
 import com.gcd.vacancy.entity.EnterpriseEntity;
 import com.gcd.vacancy.entity.VacancyEntity;
@@ -8,6 +10,9 @@ import com.gcd.vacancy.repository.EnterpriseRepository;
 import com.gcd.vacancy.repository.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class VacancyServiceImpl implements VacancyService{
