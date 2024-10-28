@@ -4,6 +4,7 @@ import com.gcd.vacancy.entity.VacancyEntity;
 import com.gcd.vacancy.enums.AccountType;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -15,4 +16,5 @@ public class EnterpriseDto {
     private String email;
     private String password;
     private String accountType;
+    private LocalDateTime createdAt;
 }
