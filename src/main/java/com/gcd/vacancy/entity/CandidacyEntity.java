@@ -18,7 +18,6 @@ public class CandidacyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Long candidateId;
     private Long vacancyId;
     private String candidateName;

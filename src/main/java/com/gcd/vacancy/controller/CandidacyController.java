@@ -14,10 +14,12 @@ public class CandidacyController {
     @Autowired
     private CandidacyService candidacyService;
 
-    @PostMapping
-    public ResponseEntity<ApplicationSentDto> applyToVacancy(@RequestParam Long vacancyId, @RequestParam Long candidateId) {
+    @PostMapping("/vacancy/{vacancyId}/candidate/{candidateId}")
+    public ResponseEntity<ApplicationSentDto> applyToVacancy(@PathVariable Long vacancyId, @PathVariable Long candidateId) {
         ApplicationSentDto candidacy = candidacyService.applyToVacancy(vacancyId, candidateId);
 
         return ResponseEntity.ok(candidacy);
     }
+
+
 }

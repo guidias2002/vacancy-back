@@ -9,4 +9,6 @@ import org.mapstruct.Mapper;
 public interface CandidacyMapper {
 
     ApplicationSentDto toApplicationSentDto(CandidacyEntity candidacyEntity);
+
+
 }
