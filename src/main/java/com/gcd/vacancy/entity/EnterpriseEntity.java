@@ -40,7 +40,7 @@ public class EnterpriseEntity {
     private final AccountType accountType = AccountType.ENTERPRISE;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, name = "created_at")
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "enterpriseId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
