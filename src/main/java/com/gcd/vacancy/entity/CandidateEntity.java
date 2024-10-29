@@ -22,13 +22,13 @@ public class CandidateEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -39,5 +39,5 @@ public class CandidateEntity {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "candidateId")
-    private List<CandidacyEntity> candidacyEntityList;
+    private List<CandidacyEntity> candidacyList;
 }

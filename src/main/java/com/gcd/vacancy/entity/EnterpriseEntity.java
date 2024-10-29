@@ -24,13 +24,13 @@ public class EnterpriseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String cnpj;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
