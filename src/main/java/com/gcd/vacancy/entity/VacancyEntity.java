@@ -40,7 +40,7 @@ public class VacancyEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @JoinColumn(name = "enterprise_id", nullable = false)
+    @JoinColumn(name = "enterprise_id")
     private Long enterpriseId;
 
 
