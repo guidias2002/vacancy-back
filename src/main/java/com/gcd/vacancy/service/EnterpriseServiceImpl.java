@@ -6,6 +6,7 @@ import com.gcd.vacancy.dto.EnterpriseWithListVacanciesDto;
 import com.gcd.vacancy.dto.VacancyDto;
 import com.gcd.vacancy.entity.EnterpriseEntity;
 import com.gcd.vacancy.entity.VacancyEntity;
+import com.gcd.vacancy.exceptions.EnterpriseNotFoundException;
 import com.gcd.vacancy.mapper.EnterpriseMapper;
 import com.gcd.vacancy.mapper.VacancyMapper;
 import com.gcd.vacancy.repository.EnterpriseRepository;
@@ -41,7 +42,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public EnterpriseDto getEnterpriseEntity(Long enterpriseId) {
         EnterpriseEntity enterprise = enterpriseRepository.findById(enterpriseId)
-                .orElseThrow(() -> new IllegalArgumentException("Enterprise not found."));
+                .orElseThrow(() -> new EnterpriseNotFoundException(enterpriseId));
 
         return enterpriseMapper.toEnterpriseDto(enterprise);
     }
@@ -49,7 +50,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public EnterpriseWithListVacanciesDto getVacanciesByEnterprise(Long enterpriseId) {
         EnterpriseEntity enterprise = enterpriseRepository.findById(enterpriseId)
-                .orElseThrow(() -> new IllegalArgumentException("Enterprise not found."));
+                .orElseThrow(() -> new EnterpriseNotFoundException(enterpriseId));
 
         return enterpriseMapper.toEnterpriseWithListVacanciesDto(enterprise);
     }

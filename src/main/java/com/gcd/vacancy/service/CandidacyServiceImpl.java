@@ -4,6 +4,8 @@ import com.gcd.vacancy.dto.ApplicationSentDto;
 import com.gcd.vacancy.entity.CandidacyEntity;
 import com.gcd.vacancy.entity.CandidateEntity;
 import com.gcd.vacancy.entity.VacancyEntity;
+import com.gcd.vacancy.exceptions.CandidateNotFoundException;
+import com.gcd.vacancy.exceptions.VacancyNotFoundException;
 import com.gcd.vacancy.mapper.CandidacyMapper;
 import com.gcd.vacancy.repository.CandidacyRepository;
 import com.gcd.vacancy.repository.CandidateRepository;
@@ -30,15 +32,15 @@ public class CandidacyServiceImpl implements CandidacyService {
     public ApplicationSentDto applyToVacancy(Long vacancyId, Long candidateId) {
 
         VacancyEntity vacancy = vacancyRepository.findById(vacancyId)
-                .orElseThrow(() -> new IllegalArgumentException("Vacancy not found."));
+                .orElseThrow(() -> new VacancyNotFoundException(vacancyId));
 
         CandidateEntity candidate = candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new IllegalArgumentException("Candidate not found."));
+                .orElseThrow(() -> new CandidateNotFoundException(candidateId));
 
         boolean alreadyApplied = candidacyRepository.existsByCandidateIdAndVacancyId(candidateId, vacancyId);
 
         if (alreadyApplied) {
-            throw new IllegalArgumentException("The candidate has already applied for this position.");
+            throw new IllegalArgumentException("O candidato já se inscreveu nessa vaga.");
         }
 
         CandidacyEntity newCandidacy = new CandidacyEntity();

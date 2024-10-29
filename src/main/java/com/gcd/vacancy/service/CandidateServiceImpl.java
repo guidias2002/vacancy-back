@@ -4,6 +4,7 @@ import com.gcd.vacancy.dto.CandidateDto;
 import com.gcd.vacancy.dto.CandidatePostDto;
 import com.gcd.vacancy.dto.CandidateWithApplicationsDto;
 import com.gcd.vacancy.entity.CandidateEntity;
+import com.gcd.vacancy.exceptions.CandidateNotFoundException;
 import com.gcd.vacancy.mapper.CandidateMapper;
 import com.gcd.vacancy.repository.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public CandidateWithApplicationsDto findCandidate(Long id) {
         CandidateEntity candidate = candidateRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Candidate not found"));
+                .orElseThrow(() -> new CandidateNotFoundException(id));
 
         return candidateMapper.toCandidateWithApplicationsDto(candidate);
     }

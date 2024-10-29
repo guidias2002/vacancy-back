@@ -3,6 +3,7 @@ package com.gcd.vacancy.service;
 import com.gcd.vacancy.dto.VacancyPostDto;
 import com.gcd.vacancy.entity.EnterpriseEntity;
 import com.gcd.vacancy.entity.VacancyEntity;
+import com.gcd.vacancy.exceptions.EnterpriseNotFoundException;
 import com.gcd.vacancy.mapper.VacancyMapper;
 import com.gcd.vacancy.repository.EnterpriseRepository;
 import com.gcd.vacancy.repository.VacancyRepository;
@@ -23,14 +24,14 @@ public class VacancyServiceImpl implements VacancyService{
     private VacancyMapper vacancyMapper;
 
     @Override
-    public void saveVacancy(VacancyPostDto vacancyPostDto) {
+    public void saveVacancy(Long enterpriseId, VacancyPostDto vacancyPostDto) {
         VacancyEntity newVacancy = vacancyMapper.toVacancyEntity(vacancyPostDto);
 
-        EnterpriseEntity enterprise = enterpriseRepository.findById(vacancyPostDto.getEnterpriseId())
-                        .orElseThrow(() -> new IllegalArgumentException(("Enterprise not found.")));
+        EnterpriseEntity enterprise = enterpriseRepository.findById(enterpriseId)
+                        .orElseThrow(() -> new EnterpriseNotFoundException(enterpriseId));
 
         newVacancy.setName_enterprise(enterprise.getName());
-        newVacancy.setEnterpriseId(enterprise.getId());
+        newVacancy.setEnterpriseId(enterpriseId);
 
         vacancyRepository.save(newVacancy);
     }
