@@ -1,4 +1,4 @@
-package com.gcd.vacancy.exceptions;
+package com.gcd.vacancy.exceptions.customExceptions;
 
 public class VacancyNotFoundException extends RuntimeException {
 
