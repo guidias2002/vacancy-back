@@ -4,6 +4,7 @@ import com.gcd.vacancy.dto.CandidateDto;
 import com.gcd.vacancy.dto.CandidatePostDto;
 import com.gcd.vacancy.dto.CandidateWithApplicationsDto;
 import com.gcd.vacancy.service.CandidateService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class CandidateController {
     private CandidateService candidateService;
 
     @PostMapping
-    public ResponseEntity sendCandidate(@RequestBody CandidatePostDto candidatePostDto) {
+    public ResponseEntity<Void> sendCandidate(@Valid @RequestBody CandidatePostDto candidatePostDto) {
         candidateService.saveCandidate(candidatePostDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
