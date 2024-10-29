@@ -13,22 +13,8 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(EnterpriseNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleEnterpriseNotFound(EnterpriseNotFoundException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(404, ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-    }
-
-    @ExceptionHandler(CandidateNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleCandidateNotFound(CandidateNotFoundException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(404, ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-    }
-
-    @ExceptionHandler(VacancyNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleVacancyNotFound(VacancyNotFoundException ex) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
         ErrorResponse errorResponse = new ErrorResponse(404, ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
