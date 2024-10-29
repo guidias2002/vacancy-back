@@ -17,5 +17,5 @@ public class CandidateWithApplicationsDto {
     private String email;
     private String accountType;
     private LocalDateTime createdAt;
-    private List<CandidacyEntity> candidacyEntityList;
+    private List<CandidacyEntity> candidacyList;
 }
