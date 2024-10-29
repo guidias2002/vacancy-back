@@ -1,14 +1,17 @@
 package com.gcd.vacancy.service;
 
+import com.gcd.vacancy.dto.VacancyDto;
 import com.gcd.vacancy.dto.VacancyPostDto;
 import com.gcd.vacancy.entity.EnterpriseEntity;
 import com.gcd.vacancy.entity.VacancyEntity;
-import com.gcd.vacancy.exceptions.EnterpriseNotFoundException;
+import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.mapper.VacancyMapper;
 import com.gcd.vacancy.repository.EnterpriseRepository;
 import com.gcd.vacancy.repository.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -28,11 +31,20 @@ public class VacancyServiceImpl implements VacancyService{
         VacancyEntity newVacancy = vacancyMapper.toVacancyEntity(vacancyPostDto);
 
         EnterpriseEntity enterprise = enterpriseRepository.findById(enterpriseId)
-                        .orElseThrow(() -> new EnterpriseNotFoundException(enterpriseId));
+                        .orElseThrow(() -> new NotFoundException("Empresa com id " + enterpriseId + " não encontrada."));
 
         newVacancy.setName_enterprise(enterprise.getName());
         newVacancy.setEnterpriseId(enterpriseId);
 
         vacancyRepository.save(newVacancy);
     }
+
+    @Override
+    public List<VacancyDto> getAllVacancy() {
+        List<VacancyDto> vacancyDtoList = vacancyMapper.toListVacancyDto(vacancyRepository.findAll());
+
+        return vacancyDtoList;
+    }
+
+
 }

@@ -3,10 +3,9 @@ package com.gcd.vacancy.service;
 import com.gcd.vacancy.dto.EnterpriseDto;
 import com.gcd.vacancy.dto.EnterprisePostDto;
 import com.gcd.vacancy.dto.EnterpriseWithListVacanciesDto;
-import com.gcd.vacancy.dto.VacancyDto;
 import com.gcd.vacancy.entity.EnterpriseEntity;
-import com.gcd.vacancy.entity.VacancyEntity;
-import com.gcd.vacancy.exceptions.EnterpriseNotFoundException;
+import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
+import com.gcd.vacancy.exceptions.customExceptions.ResourceAlreadyExistsException;
 import com.gcd.vacancy.mapper.EnterpriseMapper;
 import com.gcd.vacancy.mapper.VacancyMapper;
 import com.gcd.vacancy.repository.EnterpriseRepository;
@@ -14,7 +13,6 @@ import com.gcd.vacancy.repository.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -34,15 +32,16 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
     @Override
     public void saveEnterprise(EnterprisePostDto enterprisePostDto) {
+        ValidationFields(enterprisePostDto);
         EnterpriseEntity newEnterprise = enterpriseMapper.toEnterpriseEntity(enterprisePostDto);
 
         enterpriseRepository.save(newEnterprise);
     }
 
     @Override
-    public EnterpriseDto getEnterpriseEntity(Long enterpriseId) {
+    public EnterpriseDto getEnterpriseById(Long enterpriseId) {
         EnterpriseEntity enterprise = enterpriseRepository.findById(enterpriseId)
-                .orElseThrow(() -> new EnterpriseNotFoundException(enterpriseId));
+                .orElseThrow(() -> new NotFoundException("Empresa com id " + enterpriseId + " não encontrada."));
 
         return enterpriseMapper.toEnterpriseDto(enterprise);
     }
@@ -50,9 +49,31 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public EnterpriseWithListVacanciesDto getVacanciesByEnterprise(Long enterpriseId) {
         EnterpriseEntity enterprise = enterpriseRepository.findById(enterpriseId)
-                .orElseThrow(() -> new EnterpriseNotFoundException(enterpriseId));
+                .orElseThrow(() -> new NotFoundException("Empresa com id " + enterpriseId + " não encontrada."));
 
         return enterpriseMapper.toEnterpriseWithListVacanciesDto(enterprise);
+    }
+
+    @Override
+    public List<EnterpriseDto> getAllEnterprise() {
+        List<EnterpriseDto> enterpriseDtoList = enterpriseMapper.toEnterpriseDtoList(enterpriseRepository.findAll());
+
+        return enterpriseDtoList;
+    }
+
+
+    private void ValidationFields(EnterprisePostDto enterprisePostDto) {
+        if(enterpriseRepository.existsByEmail(enterprisePostDto.getEmail())) {
+            throw new ResourceAlreadyExistsException("O email " + "'" + enterprisePostDto.getEmail() + "'" + " já esta em uso.");
+        }
+
+        if(enterpriseRepository.existsByCnpj(enterprisePostDto.getCnpj())) {
+            throw new ResourceAlreadyExistsException("O CNPJ " + "'" + enterprisePostDto.getCnpj() + "'" + " já esta em uso.");
+        }
+
+        if(enterpriseRepository.existsByLogin(enterprisePostDto.getLogin())) {
+            throw new ResourceAlreadyExistsException("O login " + "'" + enterprisePostDto.getLogin() + "'" + " já esta em uso.");
+        }
     }
 
 

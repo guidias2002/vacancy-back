@@ -4,8 +4,7 @@ import com.gcd.vacancy.dto.ApplicationSentDto;
 import com.gcd.vacancy.entity.CandidacyEntity;
 import com.gcd.vacancy.entity.CandidateEntity;
 import com.gcd.vacancy.entity.VacancyEntity;
-import com.gcd.vacancy.exceptions.CandidateNotFoundException;
-import com.gcd.vacancy.exceptions.VacancyNotFoundException;
+import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.mapper.CandidacyMapper;
 import com.gcd.vacancy.repository.CandidacyRepository;
 import com.gcd.vacancy.repository.CandidateRepository;
@@ -32,10 +31,10 @@ public class CandidacyServiceImpl implements CandidacyService {
     public ApplicationSentDto applyToVacancy(Long vacancyId, Long candidateId) {
 
         VacancyEntity vacancy = vacancyRepository.findById(vacancyId)
-                .orElseThrow(() -> new VacancyNotFoundException(vacancyId));
+                .orElseThrow(() -> new NotFoundException("Vaga com id " + vacancyId + " não encontrada."));
 
         CandidateEntity candidate = candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new CandidateNotFoundException(candidateId));
+                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
 
         boolean alreadyApplied = candidacyRepository.existsByCandidateIdAndVacancyId(candidateId, vacancyId);
 
@@ -57,5 +56,6 @@ public class CandidacyServiceImpl implements CandidacyService {
 
         return candidacyDto;
     }
+
 
 }

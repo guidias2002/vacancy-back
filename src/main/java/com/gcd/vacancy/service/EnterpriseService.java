@@ -15,7 +15,9 @@ public interface EnterpriseService {
 
     void saveEnterprise(EnterprisePostDto enterprisePostDto);
 
-    EnterpriseDto getEnterpriseEntity(Long enterpriseId);
+    EnterpriseDto getEnterpriseById(Long enterpriseId);
 
     EnterpriseWithListVacanciesDto getVacanciesByEnterprise(Long enterpriseId);
+
+    List<EnterpriseDto> getAllEnterprise();
 }
