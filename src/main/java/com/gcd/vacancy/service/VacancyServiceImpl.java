@@ -41,9 +41,16 @@ public class VacancyServiceImpl implements VacancyService{
 
     @Override
     public List<VacancyDto> getAllVacancy() {
-        List<VacancyDto> vacancyDtoList = vacancyMapper.toListVacancyDto(vacancyRepository.findAll());
 
-        return vacancyDtoList;
+        return vacancyMapper.toListVacancyDto(vacancyRepository.findAll());
+    }
+
+    @Override
+    public List<VacancyDto> getVacancyByEnterpriseId(Long id) {
+        EnterpriseEntity enterprise = enterpriseRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Empresa não encontrada."));
+
+        return vacancyMapper.toListVacancyDto(vacancyRepository.findByEnterpriseId(id));
     }
 
 

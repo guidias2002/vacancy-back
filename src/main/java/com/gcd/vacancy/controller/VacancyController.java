@@ -19,7 +19,7 @@ public class VacancyController {
     private VacancyService vacancyService;
 
     @PostMapping("/enterpriseId/{enterpriseId}")
-    public ResponseEntity sendVacancy(@PathVariable Long enterpriseId, @RequestBody VacancyPostDto vacancyPostDto) {
+    public ResponseEntity<Void> sendVacancy(@PathVariable Long enterpriseId, @RequestBody VacancyPostDto vacancyPostDto) {
         vacancyService.saveVacancy(enterpriseId, vacancyPostDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -30,5 +30,12 @@ public class VacancyController {
         List<VacancyDto> vacancyDtoList = vacancyService.getAllVacancy();
 
         return ResponseEntity.ok(vacancyDtoList);
+    }
+
+    @GetMapping("/enterpriseId/{enterpriseId}")
+    public ResponseEntity<List<VacancyDto>> getListVacancyByEntepriseId(@PathVariable Long enterpriseId) {
+        List<VacancyDto> listVacancy = vacancyService.getVacancyByEnterpriseId(enterpriseId);
+
+        return ResponseEntity.ok(listVacancy);
     }
 }
