@@ -50,10 +50,9 @@ public class CandidacyServiceImpl implements CandidacyService {
 
         candidacyRepository.save(newCandidacy);
 
-        ApplicationSentDto candidacyDto = candidacyMapper.toApplicationSentDto(newCandidacy);
-
-        return candidacyDto;
+        return candidacyMapper.toApplicationSentDto(newCandidacy);
     }
+
 
     private VacancyEntity findVacancyById(Long vacancyId) {
         return vacancyRepository.findById(vacancyId)
