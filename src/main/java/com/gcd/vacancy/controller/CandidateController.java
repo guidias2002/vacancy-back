@@ -43,7 +43,7 @@ public class CandidateController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> loginCandidate(@RequestBody LoginCandidateDto loginCandidateDto) {
+    public ResponseEntity<Map<String, Object>> loginCandidate(@Valid @RequestBody LoginCandidateDto loginCandidateDto) {
         Map<String, Object> tokenAndLogin = candidateService.loginCandidate(loginCandidateDto);
 
         return ResponseEntity.ok(tokenAndLogin);
