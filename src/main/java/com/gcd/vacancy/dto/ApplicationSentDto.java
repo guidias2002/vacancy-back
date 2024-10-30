@@ -1,8 +1,6 @@
 package com.gcd.vacancy.dto;
 
-import jakarta.persistence.Column;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -15,5 +13,6 @@ public class ApplicationSentDto {
     private String candidateName;
     private String vacancyTitle;
     private String enterpriseName;
+    private Long enterpriseId;
     private LocalDateTime createdAt;
 }

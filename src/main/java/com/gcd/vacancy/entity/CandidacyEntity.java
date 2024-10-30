@@ -23,6 +23,7 @@ public class CandidacyEntity {
     private String candidateName;
     private String vacancyTitle;
     private String enterpriseName;
+    private Long enterpriseId;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
