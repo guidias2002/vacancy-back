@@ -1,17 +1,22 @@
 package com.gcd.vacancy.service;
 
 import com.gcd.vacancy.dto.ApplicationSentDto;
+import com.gcd.vacancy.dto.CandidacyDto;
 import com.gcd.vacancy.entity.CandidacyEntity;
 import com.gcd.vacancy.entity.CandidateEntity;
+import com.gcd.vacancy.entity.EnterpriseEntity;
 import com.gcd.vacancy.entity.VacancyEntity;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.exceptions.customExceptions.ResourceAlreadyExistsException;
 import com.gcd.vacancy.mapper.CandidacyMapper;
 import com.gcd.vacancy.repository.CandidacyRepository;
 import com.gcd.vacancy.repository.CandidateRepository;
+import com.gcd.vacancy.repository.EnterpriseRepository;
 import com.gcd.vacancy.repository.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CandidacyServiceImpl implements CandidacyService {
@@ -24,6 +29,9 @@ public class CandidacyServiceImpl implements CandidacyService {
 
     @Autowired
     private VacancyRepository vacancyRepository;
+
+    @Autowired
+    private EnterpriseRepository enterpriseRepository;
 
     @Autowired
     private CandidacyMapper candidacyMapper;
@@ -45,12 +53,31 @@ public class CandidacyServiceImpl implements CandidacyService {
         newCandidacy.setVacancyId(vacancy.getId());
         newCandidacy.setCandidateId(candidate.getId());
         newCandidacy.setCandidateName(candidate.getName());
+
+
         newCandidacy.setVacancyTitle(vacancy.getTitle());
         newCandidacy.setEnterpriseName(vacancy.getName_enterprise());
+        newCandidacy.setEnterpriseId(vacancy.getEnterpriseId());
 
         candidacyRepository.save(newCandidacy);
 
         return candidacyMapper.toApplicationSentDto(newCandidacy);
+    }
+
+    @Override
+    public List<CandidacyDto> getCandidacyByEnterpriseId(Long enterpriseId) {
+        EnterpriseEntity enterprise = enterpriseRepository.findById(enterpriseId)
+                .orElseThrow(() -> new NotFoundException("Empresa não encontrada."));
+
+        return candidacyMapper.toCandidacyListDto(candidacyRepository.findByEnterpriseId(enterpriseId));
+    }
+
+    @Override
+    public List<CandidacyDto> getCandidacyByCandidateId(Long candidateId) {
+        CandidateEntity candidate = candidateRepository.findById(candidateId)
+                .orElseThrow(() -> new NotFoundException("Candidato não encontrado."));
+
+        return candidacyMapper.toCandidacyListDto(candidacyRepository.findByCandidateId(candidateId));
     }
 
 
@@ -61,7 +88,7 @@ public class CandidacyServiceImpl implements CandidacyService {
 
     private CandidateEntity findCandidateById(Long candidateId) {
         return candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrada."));
+                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
     }
 
 
