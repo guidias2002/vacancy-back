@@ -3,7 +3,9 @@ package com.gcd.vacancy.service;
 import com.gcd.vacancy.dto.EnterpriseDto;
 import com.gcd.vacancy.dto.EnterprisePostDto;
 import com.gcd.vacancy.dto.EnterpriseWithListVacanciesDto;
+import com.gcd.vacancy.dto.LoginEnterpriseDto;
 import com.gcd.vacancy.entity.EnterpriseEntity;
+import com.gcd.vacancy.exceptions.customExceptions.IncorrectCredentialsException;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.exceptions.customExceptions.ResourceAlreadyExistsException;
 import com.gcd.vacancy.mapper.EnterpriseMapper;
@@ -13,7 +15,9 @@ import com.gcd.vacancy.repository.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EnterpriseServiceImpl implements EnterpriseService {
@@ -29,6 +33,9 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
     @Autowired
     private VacancyMapper vacancyMapper;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Override
     public void saveEnterprise(EnterprisePostDto enterprisePostDto) {
@@ -59,6 +66,25 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         List<EnterpriseDto> enterpriseDtoList = enterpriseMapper.toEnterpriseDtoList(enterpriseRepository.findAll());
 
         return enterpriseDtoList;
+    }
+
+    @Override
+    public Map<String, Object> loginEnterprise(LoginEnterpriseDto loginEnterpriseDto) {
+        EnterpriseEntity enterprise = enterpriseRepository.findByLoginOrEmail(loginEnterpriseDto.getLoginOrEmail())
+                .orElseThrow(() -> new NotFoundException("Empresa não encontrada."));
+
+        if(loginEnterpriseDto.getPassword().equals(enterprise.getPassword())) {
+            String token = tokenService.generateToken(loginEnterpriseDto.getLoginOrEmail());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("accountType", enterprise.getAccountType());
+            response.put("login", loginEnterpriseDto.getLoginOrEmail());
+
+            return response;
+        } else {
+            throw new IncorrectCredentialsException("Senha incorreta.");
+        }
     }
 
 
