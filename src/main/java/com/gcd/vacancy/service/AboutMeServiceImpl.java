@@ -22,32 +22,25 @@ public class AboutMeServiceImpl implements AboutMeService {
     private CandidateRepository candidateRepository;
 
     @Autowired
-    private CurriculumRepository curriculumRepository;
+    private AboutMeMapper aboutMeMapper;
 
     @Autowired
-    private AboutMeMapper aboutMeMapper;
+    private CurriculumServiceImpl curriculumService;
+
+    @Autowired
+    private CandidateServiceImpl candidateServiceImpl;
 
 
     @Override
     public void saveAboutMe(Long candidateId, AboutMePostDto aboutMePostDto) {
-        CandidateEntity candidateEntity = candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new NotFoundException("Candidato não encontrado."));
-
+        CandidateEntity candidateEntity = candidateServiceImpl.findCandidateOrElseThrow(candidateId);
 
         AboutMeEntity aboutMeEntity = aboutMeMapper.toAboutMeEntity(aboutMePostDto);
 
         aboutMeEntity.setCandidateId(candidateId);
         aboutMeRepository.save(aboutMeEntity);
 
-        saveAboutMeInCurriculum(aboutMeEntity, candidateEntity);
+        curriculumService.associateAboutMeWithCurriculum(aboutMeEntity, candidateEntity);
     }
 
-    private void saveAboutMeInCurriculum(AboutMeEntity aboutMeEntity, CandidateEntity candidate) {
-        CurriculumEntity curriculum = new CurriculumEntity();
-        curriculum.setAboutMe(aboutMeEntity);
-        curriculumRepository.save(curriculum);
-
-        candidate.setCurriculum(curriculum);
-        candidateRepository.save(candidate);
-    }
 }
