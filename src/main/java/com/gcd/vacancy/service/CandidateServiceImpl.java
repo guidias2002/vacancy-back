@@ -43,16 +43,14 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public CandidateWithApplicationsDto findCandidateWithApplication(Long candidateId) {
-        CandidateEntity candidate = candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
+        CandidateEntity candidate = findCandidateOrElseThrow(candidateId);
 
         return candidateMapper.toCandidateWithApplicationsDto(candidate);
     }
 
     @Override
     public CandidateWithCurriculumDto findCandidate(Long candidateId) {
-        CandidateEntity candidate = candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
+        CandidateEntity candidate = findCandidateOrElseThrow(candidateId);
 
         return candidateMapper.toCandidateWithCurriculumDto(candidate);
     }
@@ -85,5 +83,12 @@ public class CandidateServiceImpl implements CandidateService {
         if(candidateRepository.existsByLogin(candidatePostDto.getLogin())) {
             throw new ResourceAlreadyExistsException("O login " + "'" + candidatePostDto.getLogin() + "'" + " já esta em uso.");
         }
+    }
+
+    public CandidateEntity findCandidateOrElseThrow(Long candidateId) {
+        CandidateEntity candidate = candidateRepository.findById(candidateId)
+                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
+
+        return candidate;
     }
 }
