@@ -1,5 +1,6 @@
 package com.gcd.vacancy.mapper;
 
+import com.gcd.vacancy.dto.AboutMeDto;
 import com.gcd.vacancy.dto.AboutMePostDto;
 import com.gcd.vacancy.entity.AboutMeEntity;
 import org.mapstruct.Mapper;
@@ -8,4 +9,6 @@ import org.mapstruct.Mapper;
 public interface AboutMeMapper {
 
     AboutMeEntity toAboutMeEntity(AboutMePostDto aboutMePostDto);
+
+    AboutMeDto toAboutMeDto(AboutMeEntity aboutMeEntity);
 }
