@@ -1,9 +1,6 @@
 package com.gcd.vacancy.service;
 
-import com.gcd.vacancy.dto.CandidateDto;
-import com.gcd.vacancy.dto.CandidatePostDto;
-import com.gcd.vacancy.dto.CandidateWithApplicationsDto;
-import com.gcd.vacancy.dto.LoginCandidateDto;
+import com.gcd.vacancy.dto.*;
 import com.gcd.vacancy.entity.CandidateEntity;
 import com.gcd.vacancy.exceptions.customExceptions.IncorrectCredentialsException;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class CandidateServiceImpl implements CandidateService {
@@ -41,17 +37,24 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public List<CandidateDto> findAllCandidates() {
-        List<CandidateDto> listCandidates = candidateMapper.toCandidateListDto(candidateRepository.findAll());
 
-        return listCandidates;
+        return candidateMapper.toCandidateListDto(candidateRepository.findAll());
     }
 
     @Override
-    public CandidateWithApplicationsDto findCandidate(Long id) {
-        CandidateEntity candidate = candidateRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Candidato com id " + id + " não encontrado."));
+    public CandidateWithApplicationsDto findCandidateWithApplication(Long candidateId) {
+        CandidateEntity candidate = candidateRepository.findById(candidateId)
+                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
 
         return candidateMapper.toCandidateWithApplicationsDto(candidate);
+    }
+
+    @Override
+    public CandidateWithCurriculumDto findCandidate(Long candidateId) {
+        CandidateEntity candidate = candidateRepository.findById(candidateId)
+                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
+
+        return candidateMapper.toCandidateWithCurriculumDto(candidate);
     }
 
     @Override
