@@ -8,5 +8,5 @@ public class AcademicExperiencePostDto {
     private String course;
     private String institution;
     private String level;
-    private int completion;
+    private Long completion;
 }
