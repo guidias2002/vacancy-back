@@ -20,14 +20,22 @@ public class CurriculumServiceImpl {
     @Autowired
     private CandidateRepository candidateRepository;
 
-
-    public void associateAboutMeWithCurriculum(AboutMeEntity aboutMeEntity, CandidateEntity candidate) {
+    private CurriculumEntity checkIfThereIsACurriculum(CandidateEntity candidate) {
         CurriculumEntity curriculum = candidate.getCurriculum();
 
         if(curriculum == null) {
             curriculum = new CurriculumEntity();
             curriculumRepository.save(curriculum);
         }
+
+        return curriculum;
+    }
+
+
+    public void associateAboutMeWithCurriculum(AboutMeEntity aboutMeEntity, CandidateEntity candidate) {
+        CurriculumEntity curriculum = checkIfThereIsACurriculum(candidate);
+
+        aboutMeEntity.setCurriculumId(curriculum.getId());
 
         curriculum.setAboutMe(aboutMeEntity);
         curriculumRepository.save(curriculum);
@@ -37,12 +45,7 @@ public class CurriculumServiceImpl {
     }
 
     public void associateAcademicExperienceWithCurriculum(AcademicExperienceEntity academicExperienceEntity, CandidateEntity candidate) {
-        CurriculumEntity curriculum = candidate.getCurriculum();
-
-        if(curriculum == null) {
-            curriculum = new CurriculumEntity();
-            curriculumRepository.save(curriculum);
-        }
+        CurriculumEntity curriculum = checkIfThereIsACurriculum(candidate);
 
         academicExperienceEntity.setCurriculumId(curriculum.getId());
         academicExperienceEntity.setCandidateId(candidate.getId());
