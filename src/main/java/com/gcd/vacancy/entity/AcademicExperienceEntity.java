@@ -18,7 +18,7 @@ public class AcademicExperienceEntity {
     private String course;
     private String institution;
     private String level;
-    private int completion;
+    private Long completion;
     private Long candidateId;
     private Long curriculumId;
 }
