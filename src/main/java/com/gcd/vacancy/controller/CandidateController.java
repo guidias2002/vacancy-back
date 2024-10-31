@@ -1,9 +1,6 @@
 package com.gcd.vacancy.controller;
 
-import com.gcd.vacancy.dto.CandidateDto;
-import com.gcd.vacancy.dto.CandidatePostDto;
-import com.gcd.vacancy.dto.CandidateWithApplicationsDto;
-import com.gcd.vacancy.dto.LoginCandidateDto;
+import com.gcd.vacancy.dto.*;
 import com.gcd.vacancy.service.CandidateService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +32,16 @@ public class CandidateController {
         return ResponseEntity.ok(listCandidates);
     }
 
-    @GetMapping("/{candidateId}")
-    public ResponseEntity<CandidateWithApplicationsDto> findCandiate(@PathVariable Long candidateId) {
-        CandidateWithApplicationsDto candidate = candidateService.findCandidate(candidateId);
+    @GetMapping("/findCandidateWithApplications/{candidateId}")
+    public ResponseEntity<CandidateWithApplicationsDto> findCandiateWithApplication(@PathVariable Long candidateId) {
+        CandidateWithApplicationsDto candidate = candidateService.findCandidateWithApplication(candidateId);
+
+        return ResponseEntity.ok(candidate);
+    }
+
+    @GetMapping("/findCandidate/{candidateId}")
+    public ResponseEntity<CandidateWithCurriculumDto> findCandiate(@PathVariable Long candidateId) {
+        CandidateWithCurriculumDto candidate = candidateService.findCandidate(candidateId);
 
         return ResponseEntity.ok(candidate);
     }
