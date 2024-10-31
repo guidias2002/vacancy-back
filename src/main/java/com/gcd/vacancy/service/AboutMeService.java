@@ -1,5 +1,6 @@
 package com.gcd.vacancy.service;
 
+import com.gcd.vacancy.dto.AboutMeDto;
 import com.gcd.vacancy.dto.AboutMePostDto;
 import org.springframework.stereotype.Service;
 
@@ -7,4 +8,6 @@ import org.springframework.stereotype.Service;
 public interface AboutMeService {
 
     void saveAboutMe(Long candidateId, AboutMePostDto aboutMePostDto);
+
+    AboutMeDto updateAboutMe(Long candidateId, AboutMePostDto aboutMePostDto);
 }
