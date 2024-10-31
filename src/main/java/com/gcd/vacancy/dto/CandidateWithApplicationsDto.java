@@ -2,6 +2,7 @@ package com.gcd.vacancy.dto;
 
 
 import com.gcd.vacancy.entity.CandidacyEntity;
+import com.gcd.vacancy.entity.CurriculumEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
