@@ -1,6 +1,7 @@
 package com.gcd.vacancy.dto;
 
 
+import com.gcd.vacancy.entity.CurriculumEntity;
 import lombok.Data;
 
 

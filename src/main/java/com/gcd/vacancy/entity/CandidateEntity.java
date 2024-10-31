@@ -52,4 +52,7 @@ public class CandidateEntity {
 
     @OneToMany(mappedBy = "candidateId")
     private List<CandidacyEntity> candidacyList;
+
+    @OneToOne
+    private CurriculumEntity curriculum;
 }
