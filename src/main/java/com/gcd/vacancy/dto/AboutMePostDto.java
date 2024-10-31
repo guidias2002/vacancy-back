@@ -9,5 +9,4 @@ public class AboutMePostDto {
     private String location;
     private String cellphoneNumber;
     private String linkedin;
-    private Long candidateId;
 }

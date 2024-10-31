@@ -19,7 +19,5 @@ public class AboutMeEntity {
     private String location;
     private String cellphoneNumber;
     private String linkedin;
-
-    @JoinColumn(name = "candidate_id")
     private Long candidateId;
 }
