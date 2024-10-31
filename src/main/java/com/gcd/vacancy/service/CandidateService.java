@@ -1,9 +1,6 @@
 package com.gcd.vacancy.service;
 
-import com.gcd.vacancy.dto.CandidateDto;
-import com.gcd.vacancy.dto.CandidatePostDto;
-import com.gcd.vacancy.dto.CandidateWithApplicationsDto;
-import com.gcd.vacancy.dto.LoginCandidateDto;
+import com.gcd.vacancy.dto.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +12,8 @@ public interface CandidateService {
 
     List<CandidateDto> findAllCandidates();
 
-    CandidateWithApplicationsDto findCandidate(Long id);
+    CandidateWithApplicationsDto findCandidateWithApplication(Long candidateId);
+    CandidateWithCurriculumDto findCandidate(Long candidateId);
 
     Map<String, Object> loginCandidate(LoginCandidateDto loginCandidateDto);
 
