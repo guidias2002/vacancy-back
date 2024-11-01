@@ -1,9 +1,6 @@
 package com.gcd.vacancy.mapper;
 
-import com.gcd.vacancy.dto.CandidateDto;
-import com.gcd.vacancy.dto.CandidatePostDto;
-import com.gcd.vacancy.dto.CandidateWithApplicationsDto;
-import com.gcd.vacancy.dto.CandidateWithCurriculumDto;
+import com.gcd.vacancy.dto.*;
 import com.gcd.vacancy.entity.CandidateEntity;
 import org.mapstruct.Mapper;
 
@@ -19,5 +16,7 @@ public interface CandidateMapper {
     CandidateWithCurriculumDto toCandidateWithCurriculumDto(CandidateEntity candidateEntity);
 
     CandidateWithApplicationsDto toCandidateWithApplicationsDto(CandidateEntity candidateEntity);
+
+    CandidateWithAllInformationDto toCandidateWithAllInformation(CandidateEntity candidateEntity);
 
 }
