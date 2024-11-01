@@ -15,6 +15,8 @@ public interface CandidateService {
     CandidateWithApplicationsDto findCandidateWithApplication(Long candidateId);
     CandidateWithCurriculumDto findCandidate(Long candidateId);
 
+    CandidateWithAllInformationDto findCandidateWithAllInformation(Long candidateId);
+
     Map<String, Object> loginCandidate(LoginCandidateDto loginCandidateDto);
 
 }

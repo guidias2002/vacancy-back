@@ -56,6 +56,14 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    public CandidateWithAllInformationDto findCandidateWithAllInformation(Long candidateId) {
+        CandidateEntity candidate = findCandidateOrElseThrow(candidateId);
+
+        return candidateMapper.toCandidateWithAllInformation(candidate);
+    }
+
+
+    @Override
     public Map<String, Object> loginCandidate(LoginCandidateDto loginCandidateDto) {
         CandidateEntity candidate = candidateRepository.findByLoginOrEmail(loginCandidateDto.getLoginOrEmail())
                 .orElseThrow(() -> new NotFoundException("Candidato não encontrado."));

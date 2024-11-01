@@ -46,6 +46,13 @@ public class CandidateController {
         return ResponseEntity.ok(candidate);
     }
 
+    @GetMapping("/findCandidate/allInformation/{candidateId}")
+    public ResponseEntity<CandidateWithAllInformationDto> findCandiateWithAllInformation(@PathVariable Long candidateId) {
+        CandidateWithAllInformationDto candidate = candidateService.findCandidateWithAllInformation(candidateId);
+
+        return ResponseEntity.ok(candidate);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginCandidate(@Valid @RequestBody LoginCandidateDto loginCandidateDto) {
         Map<String, Object> tokenAndLogin = candidateService.loginCandidate(loginCandidateDto);
