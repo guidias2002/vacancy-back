@@ -1,9 +1,6 @@
 package com.gcd.vacancy.service;
 
-import com.gcd.vacancy.entity.AboutMeEntity;
-import com.gcd.vacancy.entity.AcademicExperienceEntity;
-import com.gcd.vacancy.entity.CandidateEntity;
-import com.gcd.vacancy.entity.CurriculumEntity;
+import com.gcd.vacancy.entity.*;
 import com.gcd.vacancy.repository.CandidateRepository;
 import com.gcd.vacancy.repository.CurriculumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,4 +53,33 @@ public class CurriculumServiceImpl {
         candidate.setCurriculum(curriculum);
         candidateRepository.save(candidate);
     }
+
+    public void associateProfessionalExperienceWithCurriculum(ProfessionalExperienceEntity professionalExperienceEntity, CandidateEntity candidate) {
+        CurriculumEntity curriculum = checkIfThereIsACurriculum(candidate);
+
+        professionalExperienceEntity.setCandidateId(candidate.getId());
+        professionalExperienceEntity.setCurriculumId(curriculum.getId());
+
+        curriculum.getProfessionalExperienceList().add(professionalExperienceEntity);
+        curriculumRepository.save(curriculum);
+
+        candidate.setCurriculum(curriculum);
+        candidateRepository.save(candidate);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
