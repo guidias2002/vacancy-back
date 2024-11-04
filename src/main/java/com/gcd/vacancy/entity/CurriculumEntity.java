@@ -26,4 +26,8 @@ public class CurriculumEntity {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "academic_experience_id", referencedColumnName = "id")
     private List<AcademicExperienceEntity> academicExperienceList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "professional_experience_id", referencedColumnName = "id")
+    private List<ProfessionalExperienceEntity> professionalExperienceList = new ArrayList<>();
 }
