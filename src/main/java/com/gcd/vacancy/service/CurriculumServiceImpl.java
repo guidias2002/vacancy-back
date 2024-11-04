@@ -82,6 +82,18 @@ public class CurriculumServiceImpl {
     }
 
 
+    public void associateSkillWithCurriculum(SkillEntity skillEntity, CandidateEntity candidate) {
+        CurriculumEntity curriculum = checkIfThereIsACurriculum(candidate);
+
+        skillEntity.setCandidateId(candidate.getId());
+        skillEntity.setCurriculumId(curriculum.getId());
+
+        curriculum.getSkillList().add(skillEntity);
+        curriculumRepository.save(curriculum);
+
+        candidate.setCurriculum(curriculum);
+        candidateRepository.save(candidate);
+    }
 
 
 
