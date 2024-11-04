@@ -66,6 +66,32 @@ public class CurriculumServiceImpl {
         candidate.setCurriculum(curriculum);
         candidateRepository.save(candidate);
     }
+
+
+    public void associateLanguageWithCurriculum(LanguageEntity languageEntity, CandidateEntity candidate) {
+        CurriculumEntity curriculum = checkIfThereIsACurriculum(candidate);
+
+        languageEntity.setCandidateId(candidate.getId());
+        languageEntity.setCurriculumId(curriculum.getId());
+
+        curriculum.getLanguageList().add(languageEntity);
+        curriculumRepository.save(curriculum);
+
+        candidate.setCurriculum(curriculum);
+        candidateRepository.save(candidate);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
