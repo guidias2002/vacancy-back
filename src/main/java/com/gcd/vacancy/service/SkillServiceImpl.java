@@ -6,6 +6,7 @@ import com.gcd.vacancy.entity.SkillEntity;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.exceptions.customExceptions.ResourceAlreadyExistsException;
 import com.gcd.vacancy.mapper.AcademicExperienceMapper;
+import com.gcd.vacancy.mapper.SkillMapper;
 import com.gcd.vacancy.repository.CandidateRepository;
 import com.gcd.vacancy.repository.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class SkillServiceImpl implements SkillService {
     private CandidateRepository candidateRepository;
 
     @Autowired
-    private AcademicExperienceMapper.SkillMapper skillMapper;
+    private SkillMapper skillMapper;
 
     @Autowired
     private CurriculumServiceImpl curriculumService;
