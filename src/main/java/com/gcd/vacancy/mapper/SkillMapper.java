@@ -5,7 +5,7 @@ import com.gcd.vacancy.entity.SkillEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface SlkillMapper {
+public interface SkillMapper {
 
     SkillEntity toSkillEntity(SkillPostDto skillPostDto);
 }
