@@ -4,6 +4,7 @@ import com.gcd.vacancy.dto.AcademicExperienceDto;
 import com.gcd.vacancy.dto.AcademicExperiencePostDto;
 import com.gcd.vacancy.dto.AcademicExperienceUpdateDto;
 import com.gcd.vacancy.service.AcademicExperienceService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class AcademicExperienceController {
     private AcademicExperienceService academicExperienceService;
 
     @PostMapping("/candidateId/{candidateId}")
-    public ResponseEntity<Void> sendAcademicExperience(@PathVariable Long candidateId, @RequestBody AcademicExperiencePostDto academicExperiencePostDto) {
+    public ResponseEntity<Void> sendAcademicExperience(@PathVariable Long candidateId, @Valid @RequestBody AcademicExperiencePostDto academicExperiencePostDto) {
         academicExperienceService.saveAcademicExperience(candidateId, academicExperiencePostDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);

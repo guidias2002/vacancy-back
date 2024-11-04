@@ -12,7 +12,6 @@ import com.gcd.vacancy.repository.AcademicExperienceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -48,8 +47,6 @@ public class AcademicExperienceServiceImpl implements AcademicExperienceService 
     public AcademicExperienceDto updateAcademicExperience(Long academicExperienceId, AcademicExperienceUpdateDto academicExperienceUpdateDto) {
         AcademicExperienceEntity academicExperienceEntity = academicExperienceRepository.findById(academicExperienceId)
                 .orElseThrow(() -> new NotFoundException("Experiência acadêmica com id " + academicExperienceId + " não encontrada."));
-
-        System.out.println("CURSOOOOOOOOOOOOOOO" + academicExperienceUpdateDto.getCourse());
 
         updateFieldOrThrowIfEmpty(academicExperienceUpdateDto.getCourse(), "course", academicExperienceEntity::setCourse);
         updateFieldOrThrowIfEmpty(academicExperienceUpdateDto.getInstitution(), "institution", academicExperienceEntity::setInstitution);
