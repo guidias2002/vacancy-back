@@ -11,4 +11,6 @@ public interface ProfessionalExperienceService {
     void saveProfessionalExperience(Long candidateId, ProfessionalExperiencePostDto professionalExperiencePostDto);
 
     ProfessionalExperienceDto updateProfessionalExperience(Long professionalExperienceId, ProfessionalExperienceUpdateDto professionalExperienceUpdateDto);
+
+    void deleteProfessionalExperience(Long professionalExperienceId);
 }

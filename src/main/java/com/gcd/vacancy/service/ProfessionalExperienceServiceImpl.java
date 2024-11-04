@@ -59,6 +59,15 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
         return professionalExperienceMapper.toProfessionalExperienceDto(professionalExperienceEntity);
     }
 
+    @Override
+    public void deleteProfessionalExperience(Long professionalExperienceId) {
+        ProfessionalExperienceEntity professionalExperienceEntity = professionalExperienceRepository.findById(professionalExperienceId)
+                .orElseThrow(() -> new NotFoundException("Experiência profissional com id " + professionalExperienceId + " não encontrado."));
+
+        professionalExperienceRepository.deleteById(professionalExperienceId);
+    }
+
+
     private void updateFieldOrThrowIfEmpty(String newValue, String fieldName, Consumer<String> setter) {
         Optional.ofNullable(newValue)
                 .filter(value -> !value.trim().isEmpty())

@@ -30,4 +30,11 @@ public class ProfessionalExperienceController {
 
         return ResponseEntity.ok(professionalExperienceDto);
     }
+
+    @DeleteMapping("/delete/{professionalExperienceId}")
+    public ResponseEntity<Void> deleteProfessionalExperience(@PathVariable Long professionalExperienceId) {
+        professionalExperienceService.deleteProfessionalExperience(professionalExperienceId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
