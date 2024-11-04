@@ -16,8 +16,6 @@ public class AboutMeController {
     @Autowired
     private AboutMeService aboutMeService;
 
-    //teste
-
     @PostMapping("/{candidateId}")
     public ResponseEntity<Void> sendAboutMe(@PathVariable Long candidateId, @Valid @RequestBody AboutMePostDto aboutMePostDto) {
         aboutMeService.saveAboutMe(candidateId, aboutMePostDto);
