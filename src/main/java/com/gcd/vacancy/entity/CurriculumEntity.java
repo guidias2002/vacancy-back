@@ -30,4 +30,8 @@ public class CurriculumEntity {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "professional_experience_id", referencedColumnName = "id")
     private List<ProfessionalExperienceEntity> professionalExperienceList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "language_id", referencedColumnName = "id")
+    private List<LanguageEntity> languageList = new ArrayList<>();
 }
