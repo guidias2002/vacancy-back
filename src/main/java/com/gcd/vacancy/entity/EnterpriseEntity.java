@@ -34,20 +34,12 @@ public class EnterpriseEntity {
     @Column(nullable = false, unique = true)
     private String cnpj;
 
-    @NotBlank(message = "O login é obrigatório")
-    @Size(min = 6, message = "O login deve ter no mínimo 6 caracteres")
     @Column(nullable = false, unique = true)
     private String login;
 
-    @NotBlank(message = "O email é obrigatório")
-    @Email(message = "O email deve estar em um formato válido")
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank(message = "A senha é obrigatória")
-    @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).+$",
-            message = "A senha deve ter pelo menos uma letra maiúscula e um número")
     @Column(nullable = false)
     private String password;
 
