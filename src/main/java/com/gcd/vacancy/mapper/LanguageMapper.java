@@ -1,5 +1,6 @@
 package com.gcd.vacancy.mapper;
 
+import com.gcd.vacancy.dto.LanguageDto;
 import com.gcd.vacancy.dto.LanguagePostDto;
 import com.gcd.vacancy.entity.LanguageEntity;
 import org.mapstruct.Mapper;
@@ -8,4 +9,6 @@ import org.mapstruct.Mapper;
 public interface LanguageMapper {
 
     LanguageEntity toLanguageEntity(LanguagePostDto languagePostDto);
+
+    LanguageDto toLanguageDto(LanguageEntity languageEntity);
 }
