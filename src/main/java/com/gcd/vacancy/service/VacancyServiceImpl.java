@@ -27,7 +27,7 @@ public class VacancyServiceImpl implements VacancyService{
     private VacancyMapper vacancyMapper;
 
     @Autowired
-    private EnterpriseNotFoundValidation enterpriseNotFoundValidation
+    private EnterpriseNotFoundValidation enterpriseNotFoundValidation;
 
     @Override
     public void saveVacancy(Long enterpriseId, VacancyPostDto vacancyPostDto) {
