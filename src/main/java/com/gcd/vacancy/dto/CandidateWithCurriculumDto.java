@@ -15,5 +15,5 @@ public class CandidateWithCurriculumDto {
     private String email;
     private String accountType;
     private LocalDateTime createdAt;
-    private CurriculumEntity curriculum;
+    private CurriculumDto curriculum;
 }
