@@ -41,7 +41,7 @@ public class CandidateController {
 
     @GetMapping("/findCandidate/{candidateId}")
     public ResponseEntity<CandidateWithCurriculumDto> findCandiate(@PathVariable Long candidateId) {
-        CandidateWithCurriculumDto candidate = candidateService.findCandidate(candidateId);
+        CandidateWithCurriculumDto candidate = candidateService.findCandidateWithCurriculum(candidateId);
 
         return ResponseEntity.ok(candidate);
     }

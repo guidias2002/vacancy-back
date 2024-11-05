@@ -49,7 +49,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public CandidateWithCurriculumDto findCandidate(Long candidateId) {
+    public CandidateWithCurriculumDto findCandidateWithCurriculum(Long candidateId) {
         CandidateEntity candidate = findCandidateOrElseThrow(candidateId);
 
         return candidateMapper.toCandidateWithCurriculumDto(candidate);

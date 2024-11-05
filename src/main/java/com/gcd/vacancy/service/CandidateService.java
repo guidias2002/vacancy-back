@@ -13,7 +13,8 @@ public interface CandidateService {
     List<CandidateDto> findAllCandidates();
 
     CandidateWithApplicationsDto findCandidateWithApplication(Long candidateId);
-    CandidateWithCurriculumDto findCandidate(Long candidateId);
+
+    CandidateWithCurriculumDto findCandidateWithCurriculum(Long candidateId);
 
     CandidateWithAllInformationDto findCandidateWithAllInformation(Long candidateId);
 
