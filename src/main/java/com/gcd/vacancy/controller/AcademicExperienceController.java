@@ -26,7 +26,7 @@ public class AcademicExperienceController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/updateAcademicExperience/{academicExperienceId}")
+    @PutMapping("/update/{academicExperienceId}")
     public ResponseEntity<AcademicExperienceDto> updateAcademicExperience(@PathVariable Long academicExperienceId, @RequestBody AcademicExperienceUpdateDto academicExperienceUpdateDto) {
         AcademicExperienceDto academicExperienceDto = academicExperienceService.updateAcademicExperience(academicExperienceId, academicExperienceUpdateDto);
 
