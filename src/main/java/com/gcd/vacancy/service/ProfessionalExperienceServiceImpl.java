@@ -31,11 +31,13 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
     @Autowired
     private CurriculumServiceImpl curriculumService;
 
+    @Autowired
+    private CandidateNotFoundValidation candidateValidationAlreadyExists;
+
 
     @Override
     public void saveProfessionalExperience(Long candidateId, ProfessionalExperiencePostDto professionalExperiencePostDto) {
-        CandidateEntity candidateEntity = candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado"));
+        CandidateEntity candidateEntity = candidateValidationAlreadyExists.findCandidateById(candidateId);
 
         ProfessionalExperienceEntity professionalExperienceEntity = professionalExperienceMapper.toProfessionalExperienceEntity(professionalExperiencePostDto);
 
@@ -61,7 +63,7 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
 
     @Override
     public void deleteProfessionalExperience(Long professionalExperienceId) {
-        ProfessionalExperienceEntity professionalExperienceEntity = professionalExperienceRepository.findById(professionalExperienceId)
+        professionalExperienceRepository.findById(professionalExperienceId)
                 .orElseThrow(() -> new NotFoundException("Experiência profissional com id " + professionalExperienceId + " não encontrado."));
 
         professionalExperienceRepository.deleteById(professionalExperienceId);

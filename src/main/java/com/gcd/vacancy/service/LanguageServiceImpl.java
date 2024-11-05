@@ -31,10 +31,12 @@ public class LanguageServiceImpl implements LanguageService{
     @Autowired
     private CurriculumServiceImpl curriculumService;
 
+    @Autowired
+    private CandidateNotFoundValidation candidateValidationAlreadyExists;
+
     @Override
     public void saveLanguage(Long candidateId, LanguagePostDto languagePostDto) {
-        CandidateEntity candidateEntity = candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
+        CandidateEntity candidateEntity = candidateValidationAlreadyExists.findCandidateById(candidateId);
 
         Optional<LanguageEntity> languageExists = languageRepository.findByLanguageIgnoreCase(languagePostDto.getLanguage());
 
@@ -62,8 +64,8 @@ public class LanguageServiceImpl implements LanguageService{
 
     @Override
     public void deleteLanguage(Long languageId) {
-        LanguageEntity languageEntity = languageRepository.findById(languageId)
-                .orElseThrow(() -> new NotFoundException("Linguagem com id " + languageId + " não encontrada."));
+        languageRepository.findById(languageId)
+                .orElseThrow(() -> new NotFoundException("Idioma com id " + languageId + " não encontrada."));
 
         languageRepository.deleteById(languageId);
     }

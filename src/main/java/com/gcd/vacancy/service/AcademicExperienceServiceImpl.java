@@ -31,10 +31,13 @@ public class AcademicExperienceServiceImpl implements AcademicExperienceService 
     @Autowired
     private CandidateServiceImpl candidateServiceImpl;
 
+    @Autowired
+    private CandidateNotFoundValidation candidateValidationAlreadyExists;
+
 
     @Override
     public void saveAcademicExperience(Long candidateId, AcademicExperiencePostDto academicExperiencePostDto) {
-        CandidateEntity candidate = candidateServiceImpl.findCandidateOrElseThrow(candidateId);
+        CandidateEntity candidate = candidateValidationAlreadyExists.findCandidateById(candidateId);
 
         AcademicExperienceEntity academicExperienceEntity = academicExperienceMapper.toAcaAcademicExperienceEntity(academicExperiencePostDto);
 

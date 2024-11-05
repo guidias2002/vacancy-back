@@ -5,7 +5,6 @@ import com.gcd.vacancy.entity.CandidateEntity;
 import com.gcd.vacancy.entity.SkillEntity;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.exceptions.customExceptions.ResourceAlreadyExistsException;
-import com.gcd.vacancy.mapper.AcademicExperienceMapper;
 import com.gcd.vacancy.mapper.SkillMapper;
 import com.gcd.vacancy.repository.CandidateRepository;
 import com.gcd.vacancy.repository.SkillRepository;
@@ -29,10 +28,12 @@ public class SkillServiceImpl implements SkillService {
     @Autowired
     private CurriculumServiceImpl curriculumService;
 
+    @Autowired
+    private CandidateNotFoundValidation candidateValidationAlreadyExists;
+
     @Override
     public void saveSkill(Long candidateId, SkillPostDto skillPostDto) {
-        CandidateEntity candidateEntity = candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
+        CandidateEntity candidateEntity = candidateValidationAlreadyExists.findCandidateById(candidateId);
 
         Optional<SkillEntity> skillExist = skillRepository.findBySkillIgnoreCase(skillPostDto.getSkill());
 

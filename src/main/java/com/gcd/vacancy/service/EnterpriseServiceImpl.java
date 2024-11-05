@@ -37,6 +37,9 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private EnterpriseNotFoundValidation enterpriseNotFoundValidation;
+
     @Override
     public void saveEnterprise(EnterprisePostDto enterprisePostDto) {
         ValidationFields(enterprisePostDto);
@@ -47,16 +50,14 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
     @Override
     public EnterpriseDto getEnterpriseById(Long enterpriseId) {
-        EnterpriseEntity enterprise = enterpriseRepository.findById(enterpriseId)
-                .orElseThrow(() -> new NotFoundException("Empresa com id " + enterpriseId + " não encontrada."));
+        EnterpriseEntity enterprise = enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
 
         return enterpriseMapper.toEnterpriseDto(enterprise);
     }
 
     @Override
     public EnterpriseWithListVacanciesDto getVacanciesByEnterprise(Long enterpriseId) {
-        EnterpriseEntity enterprise = enterpriseRepository.findById(enterpriseId)
-                .orElseThrow(() -> new NotFoundException("Empresa com id " + enterpriseId + " não encontrada."));
+        EnterpriseEntity enterprise = enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
 
         return enterpriseMapper.toEnterpriseWithListVacanciesDto(enterprise);
     }

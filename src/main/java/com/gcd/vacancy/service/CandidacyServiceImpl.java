@@ -36,11 +36,17 @@ public class CandidacyServiceImpl implements CandidacyService {
     @Autowired
     private CandidacyMapper candidacyMapper;
 
+    @Autowired
+    private CandidateNotFoundValidation candidateValidationAlreadyExists;
+
+    @Autowired
+    private EnterpriseNotFoundValidation enterpriseNotFoundValidation;
+
     @Override
     public ApplicationSentDto applyToVacancy(Long vacancyId, Long candidateId) {
 
         VacancyEntity vacancy = findVacancyById(vacancyId);
-        CandidateEntity candidate = findCandidateById(candidateId);
+        CandidateEntity candidate = candidateValidationAlreadyExists.findCandidateById(candidateId);
 
         boolean alreadyApplied = candidacyRepository.existsByCandidateIdAndVacancyId(candidateId, vacancyId);
 
@@ -66,16 +72,14 @@ public class CandidacyServiceImpl implements CandidacyService {
 
     @Override
     public List<CandidacyDto> getCandidacyByEnterpriseId(Long enterpriseId) {
-        EnterpriseEntity enterprise = enterpriseRepository.findById(enterpriseId)
-                .orElseThrow(() -> new NotFoundException("Empresa não encontrada."));
+        enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
 
         return candidacyMapper.toCandidacyListDto(candidacyRepository.findByEnterpriseId(enterpriseId));
     }
 
     @Override
     public List<CandidacyDto> getCandidacyByCandidateId(Long candidateId) {
-        CandidateEntity candidate = candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new NotFoundException("Candidato não encontrado."));
+        candidateValidationAlreadyExists.findCandidateById(candidateId);
 
         return candidacyMapper.toCandidacyListDto(candidacyRepository.findByCandidateId(candidateId));
     }
@@ -84,11 +88,6 @@ public class CandidacyServiceImpl implements CandidacyService {
     private VacancyEntity findVacancyById(Long vacancyId) {
         return vacancyRepository.findById(vacancyId)
                 .orElseThrow(() -> new NotFoundException("Vaga com id " + vacancyId + " não encontrada."));
-    }
-
-    private CandidateEntity findCandidateById(Long candidateId) {
-        return candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
     }
 
 

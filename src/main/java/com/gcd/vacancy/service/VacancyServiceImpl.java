@@ -26,12 +26,14 @@ public class VacancyServiceImpl implements VacancyService{
     @Autowired
     private VacancyMapper vacancyMapper;
 
+    @Autowired
+    private EnterpriseNotFoundValidation enterpriseNotFoundValidation
+
     @Override
     public void saveVacancy(Long enterpriseId, VacancyPostDto vacancyPostDto) {
         VacancyEntity newVacancy = vacancyMapper.toVacancyEntity(vacancyPostDto);
 
-        EnterpriseEntity enterprise = enterpriseRepository.findById(enterpriseId)
-                        .orElseThrow(() -> new NotFoundException("Empresa com id " + enterpriseId + " não encontrada."));
+        EnterpriseEntity enterprise = enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
 
         newVacancy.setName_enterprise(enterprise.getName());
         newVacancy.setEnterpriseId(enterpriseId);
@@ -46,11 +48,10 @@ public class VacancyServiceImpl implements VacancyService{
     }
 
     @Override
-    public List<VacancyDto> getVacancyByEnterpriseId(Long id) {
-        EnterpriseEntity enterprise = enterpriseRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Empresa não encontrada."));
+    public List<VacancyDto> getVacancyByEnterpriseId(Long enterpriseId) {
+        enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
 
-        return vacancyMapper.toListVacancyDto(vacancyRepository.findByEnterpriseId(id));
+        return vacancyMapper.toListVacancyDto(vacancyRepository.findByEnterpriseId(enterpriseId));
     }
 
 

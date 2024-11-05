@@ -34,10 +34,13 @@ public class AboutMeServiceImpl implements AboutMeService {
     @Autowired
     private CandidateServiceImpl candidateServiceImpl;
 
+    @Autowired
+    private CandidateNotFoundValidation candidateNotFoundValidation;
+
 
     @Override
     public void saveAboutMe(Long candidateId, AboutMePostDto aboutMePostDto) {
-        CandidateEntity candidateEntity = candidateServiceImpl.findCandidateOrElseThrow(candidateId);
+        CandidateEntity candidateEntity = candidateNotFoundValidation.findCandidateById(candidateId);
 
         AboutMeEntity aboutMeEntity = aboutMeMapper.toAboutMeEntity(aboutMePostDto);
 
@@ -50,7 +53,7 @@ public class AboutMeServiceImpl implements AboutMeService {
 
     @Override
     public AboutMeDto updateAboutMe(Long candidateId, AboutMePostDto aboutMePostDto) {
-        CandidateEntity candidate = candidateServiceImpl.findCandidateOrElseThrow(candidateId);
+        CandidateEntity candidate = candidateNotFoundValidation.findCandidateById(candidateId);
 
         AboutMeEntity aboutMeEntity = aboutMeRepository.findAboutMeByCandidateId(candidate.getId())
                 .orElseThrow(() -> new NotFoundException("O candidato com id " + candidate.getId() + " não possui a sessão 'Sobre mim' criada."));
