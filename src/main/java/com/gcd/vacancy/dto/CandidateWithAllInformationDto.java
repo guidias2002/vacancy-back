@@ -19,5 +19,5 @@ public class CandidateWithAllInformationDto {
     private AccountType accountType;
     private LocalDateTime createdAt;
     private List<CandidacyEntity> candidacyList;
-    private CurriculumEntity curriculum;
+    private CurriculumDto curriculum;
 }
