@@ -34,7 +34,7 @@ public class SkillServiceImpl implements SkillService {
         CandidateEntity candidateEntity = candidateRepository.findById(candidateId)
                 .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
 
-        Optional<SkillEntity> skillExist = skillRepository.findBySkill(skillPostDto.getSkill());
+        Optional<SkillEntity> skillExist = skillRepository.findBySkillIgnoreCase(skillPostDto.getSkill());
 
         if(skillExist.isPresent()) {
             throw new ResourceAlreadyExistsException("Skill " + "'" + skillPostDto.getSkill() + "'" + " já existe.");
