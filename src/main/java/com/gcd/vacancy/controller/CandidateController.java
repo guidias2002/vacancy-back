@@ -47,7 +47,7 @@ public class CandidateController {
     }
 
     @GetMapping("/findCandidate/allInformation/{candidateId}")
-    public ResponseEntity<CandidateWithAllInformationDto> findCandiateWithAllInformation(@PathVariable Long candidateId) {
+    public ResponseEntity<CandidateWithAllInformationDto> findCandidateWithAllInformation(@PathVariable Long candidateId) {
         CandidateWithAllInformationDto candidate = candidateService.findCandidateWithAllInformation(candidateId);
 
         return ResponseEntity.ok(candidate);
@@ -58,6 +58,13 @@ public class CandidateController {
         Map<String, Object> tokenAndLogin = candidateService.loginCandidate(loginCandidateDto);
 
         return ResponseEntity.ok(tokenAndLogin);
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<Map<String, Boolean>> checkUser(@RequestParam String login, @RequestParam String email) {
+        Map<String, Boolean> response = candidateService.checkUser(login, email);
+
+        return ResponseEntity.ok(response);
     }
 
 }

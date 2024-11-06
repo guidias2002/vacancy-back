@@ -20,4 +20,6 @@ public interface CandidateService {
 
     Map<String, Object> loginCandidate(LoginCandidateDto loginCandidateDto);
 
+    Map<String, Boolean> checkUser(String login, String email);
+
 }

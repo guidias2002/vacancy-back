@@ -86,6 +86,18 @@ public class CandidateServiceImpl implements CandidateService {
         }
     }
 
+    @Override
+    public Map<String, Boolean> checkUser(String login, String email) {
+        boolean loginExists = candidateRepository.existsByLogin(login);
+        boolean emailExists = candidateRepository.existsByEmail(email);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("login", loginExists);
+        response.put("email", emailExists);
+
+        return response;
+    }
+
     private void ValidationFields(CandidatePostDto candidatePostDto) {
         if(candidateRepository.existsByEmail(candidatePostDto.getEmail())) {
             throw new ResourceAlreadyExistsException("O email " + "'" + candidatePostDto.getEmail() + "'" + " já esta em uso.");
