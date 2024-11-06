@@ -4,7 +4,9 @@ import com.gcd.vacancy.entity.CandidateEntity;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.repository.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CandidateNotFoundValidation {
 
     @Autowired
