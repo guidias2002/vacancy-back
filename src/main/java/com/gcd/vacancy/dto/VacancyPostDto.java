@@ -13,4 +13,5 @@ public class VacancyPostDto {
     private String remuneration;
     private String modality;
     private String description;
+    private String location;
 }

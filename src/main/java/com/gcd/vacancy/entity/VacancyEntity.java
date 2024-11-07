@@ -36,6 +36,9 @@ public class VacancyEntity {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private String location;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
