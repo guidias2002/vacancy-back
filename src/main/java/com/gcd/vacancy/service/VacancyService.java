@@ -14,5 +14,7 @@ public interface VacancyService {
 
     List<VacancyDto> getAllVacancy();
 
+    VacancyDto getVacancyById(Long vacancyId);
+
     List<VacancyDto> getVacancyByEnterpriseId(Long id);
 }

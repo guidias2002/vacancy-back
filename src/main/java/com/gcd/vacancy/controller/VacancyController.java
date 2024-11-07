@@ -38,4 +38,11 @@ public class VacancyController {
 
         return ResponseEntity.ok(listVacancy);
     }
+
+    @GetMapping("/{vacancyId}")
+    public ResponseEntity<VacancyDto> getVacancyById(@PathVariable Long vacancyId) {
+        VacancyDto vacancyDto = vacancyService.getVacancyById(vacancyId);
+
+        return ResponseEntity.ok(vacancyDto);
+    }
 }

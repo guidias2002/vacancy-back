@@ -48,6 +48,12 @@ public class VacancyServiceImpl implements VacancyService{
     }
 
     @Override
+    public VacancyDto getVacancyById(Long vacancyId) {
+        return vacancyMapper.toVacancyDto(vacancyRepository.findById(vacancyId)
+                .orElseThrow(() -> new NotFoundException("Vaga com id" + vacancyId + " não encontrada")));
+    }
+
+    @Override
     public List<VacancyDto> getVacancyByEnterpriseId(Long enterpriseId) {
         enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
 
