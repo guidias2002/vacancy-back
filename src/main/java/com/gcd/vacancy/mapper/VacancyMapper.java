@@ -12,5 +12,7 @@ public interface VacancyMapper {
 
     VacancyEntity toVacancyEntity(VacancyPostDto vacancyPostDto);
 
+    VacancyDto toVacancyDto(VacancyEntity vacancy);
+
     List<VacancyDto> toListVacancyDto(List<VacancyEntity> vacancyEntities);
 }
