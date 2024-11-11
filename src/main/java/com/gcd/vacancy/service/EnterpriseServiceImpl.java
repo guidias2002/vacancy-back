@@ -64,9 +64,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
     @Override
     public List<EnterpriseDto> getAllEnterprise() {
-        List<EnterpriseDto> enterpriseDtoList = enterpriseMapper.toEnterpriseDtoList(enterpriseRepository.findAll());
-
-        return enterpriseDtoList;
+        return enterpriseMapper.toEnterpriseDtoList(enterpriseRepository.findAll());
     }
 
     @Override
