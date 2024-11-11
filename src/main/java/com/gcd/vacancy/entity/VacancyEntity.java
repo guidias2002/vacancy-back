@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "vacancy")
@@ -33,8 +34,18 @@ public class VacancyEntity {
     @Column(nullable = false)
     private String modality;
 
+    @Lob
     @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
+    private List<String> responsibilities;
+
+    @Column(nullable = false)
+    private List<String> requirements;
+
+    @Column(nullable = false)
+    private List<String> additionalInformation;
 
     @Column(nullable = false)
     private String location;

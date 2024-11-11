@@ -3,6 +3,7 @@ package com.gcd.vacancy.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class VacancyDto {
@@ -17,4 +18,8 @@ public class VacancyDto {
     private String location;
     private Long enterpriseId;
     private LocalDateTime createdAt;
+    private List<String> responsibilities;
+    private List<String> requirements;
+    private List<String> additionalInformation;
+
 }
