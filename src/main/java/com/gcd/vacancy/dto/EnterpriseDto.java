@@ -1,5 +1,6 @@
 package com.gcd.vacancy.dto;
 
+import com.gcd.vacancy.entity.AboutCompanyEntity;
 import com.gcd.vacancy.entity.VacancyEntity;
 import com.gcd.vacancy.enums.AccountType;
 import lombok.Data;
@@ -17,4 +18,5 @@ public class EnterpriseDto {
     private String password;
     private String accountType;
     private LocalDateTime createdAt;
+    private AboutCompanyEntity aboutCompany;
 }

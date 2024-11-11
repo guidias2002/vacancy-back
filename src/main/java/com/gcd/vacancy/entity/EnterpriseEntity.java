@@ -53,5 +53,8 @@ public class EnterpriseEntity {
     @OneToMany(mappedBy = "enterpriseId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<VacancyEntity> vacancyEntityList;
 
+    @OneToOne
+    private AboutCompanyEntity aboutCompany;
+
 
 }
