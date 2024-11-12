@@ -78,7 +78,7 @@ public class AboutMeServiceImpl implements AboutMeService {
     @Override
     public AboutMeDto findAboutMeByCandidateId(Long candidateId) {
         AboutMeEntity aboutMeEntity = aboutMeRepository.findAboutMeByCandidateId(candidateId)
-                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Sobre mim ainda não foi preenchido."));
 
         return aboutMeMapper.toAboutMeDto(aboutMeEntity);
     }
