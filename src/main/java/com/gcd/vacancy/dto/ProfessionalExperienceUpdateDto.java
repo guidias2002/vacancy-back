@@ -7,6 +7,10 @@ public class ProfessionalExperienceUpdateDto {
 
     private String enterprise;
     private String position;
-    private String period;
+    private String monthStart;
+    private String yearStart;
+    private String monthEnd;
+    private String yearEnd;
+    private Boolean isCurrentJob;
     private String description;
 }

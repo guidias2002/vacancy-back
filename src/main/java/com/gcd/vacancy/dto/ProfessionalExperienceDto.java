@@ -8,6 +8,10 @@ public class ProfessionalExperienceDto {
     private Long id;
     private String enterprise;
     private String position;
-    private String period;
+    private String monthStart;
+    private String yearStart;
+    private String monthEnd;
+    private String yearEnd;
+    private Boolean isCurrentJob;
     private String description;
 }

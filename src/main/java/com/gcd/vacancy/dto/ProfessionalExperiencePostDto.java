@@ -13,7 +13,16 @@ public class ProfessionalExperiencePostDto {
     private String position;
 
     @NotBlank(message = "Campo obrigatório.")
-    private String period;
+    private String monthStart;
+
+    @NotBlank(message = "Campo obrigatório.")
+    private String yearStart;
+
+    private String monthEnd;
+
+    private String yearEnd;
+
+    private Boolean isCurrentJob;
 
     @NotBlank(message = "Campo obrigatório.")
     private String description;
