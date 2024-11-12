@@ -29,4 +29,11 @@ public class AboutMeController {
 
         return ResponseEntity.ok(aboutMeDto);
     }
+
+    @GetMapping("/{candidateId}")
+    public ResponseEntity<AboutMeDto> findAboutMeByCandidateById(@PathVariable Long candidateId) {
+        AboutMeDto aboutMeDto = aboutMeService.findAboutMeByCandidateId(candidateId);
+
+        return ResponseEntity.ok(aboutMeDto);
+    }
 }

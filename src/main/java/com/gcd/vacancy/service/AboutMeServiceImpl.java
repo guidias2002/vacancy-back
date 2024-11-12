@@ -6,6 +6,7 @@ import com.gcd.vacancy.entity.AboutMeEntity;
 import com.gcd.vacancy.entity.CandidateEntity;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.exceptions.customExceptions.NullValueException;
+import com.gcd.vacancy.exceptions.customExceptions.ResourceAlreadyExistsException;
 import com.gcd.vacancy.mapper.AboutMeMapper;
 import com.gcd.vacancy.repository.AboutMeRepository;
 import com.gcd.vacancy.repository.CandidateRepository;
@@ -40,6 +41,12 @@ public class AboutMeServiceImpl implements AboutMeService {
 
     @Override
     public void saveAboutMe(Long candidateId, AboutMePostDto aboutMePostDto) {
+        Boolean existsAboutMe = aboutMeRepository.existsByCandidateId(candidateId);
+
+        if(existsAboutMe) {
+            throw new ResourceAlreadyExistsException("About me já está criado.");
+        };
+
         CandidateEntity candidateEntity = candidateNotFoundValidation.findCandidateById(candidateId);
 
         AboutMeEntity aboutMeEntity = aboutMeMapper.toAboutMeEntity(aboutMePostDto);
@@ -64,6 +71,14 @@ public class AboutMeServiceImpl implements AboutMeService {
         updateFieldOrThrowIfEmpty(aboutMePostDto.getCellphoneNumber(), "cellphonenumber", aboutMeEntity::setCellphoneNumber);
 
         aboutMeRepository.save(aboutMeEntity);
+
+        return aboutMeMapper.toAboutMeDto(aboutMeEntity);
+    }
+
+    @Override
+    public AboutMeDto findAboutMeByCandidateId(Long candidateId) {
+        AboutMeEntity aboutMeEntity = aboutMeRepository.findAboutMeByCandidateId(candidateId)
+                .orElseThrow(() -> new NotFoundException("Candidato com id " + candidateId + " não encontrado."));
 
         return aboutMeMapper.toAboutMeDto(aboutMeEntity);
     }

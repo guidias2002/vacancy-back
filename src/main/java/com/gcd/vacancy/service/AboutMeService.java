@@ -10,4 +10,6 @@ public interface AboutMeService {
     void saveAboutMe(Long candidateId, AboutMePostDto aboutMePostDto);
 
     AboutMeDto updateAboutMe(Long candidateId, AboutMePostDto aboutMePostDto);
+
+    AboutMeDto findAboutMeByCandidateId(Long candidateId);
 }
