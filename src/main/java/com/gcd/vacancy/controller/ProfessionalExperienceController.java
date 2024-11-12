@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/professionalExperience")
 public class ProfessionalExperienceController {
@@ -18,8 +20,9 @@ public class ProfessionalExperienceController {
     private ProfessionalExperienceService professionalExperienceService;
 
     @PostMapping("/candidateId/{candidateId}")
-    public ResponseEntity<Void> saveProfessionalExperience(@PathVariable Long candidateId, @Valid @RequestBody ProfessionalExperiencePostDto professionalExperiencePostDto) {
-        professionalExperienceService.saveProfessionalExperience(candidateId, professionalExperiencePostDto);
+    public ResponseEntity<Void> saveProfessionalExperiences(@PathVariable Long candidateId, @Valid @RequestBody List<ProfessionalExperiencePostDto> professionalExperiencePostDtos) {
+
+        professionalExperienceService.saveProfessionalExperience(candidateId, professionalExperiencePostDtos);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -38,10 +41,10 @@ public class ProfessionalExperienceController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProfessionalExperienceDto> findProfessionalExperienceByCandidate(@PathVariable Long id) {
-        ProfessionalExperienceDto professionalExperienceDto = professionalExperienceService.findProfessionalExperienceByCandidate(id);
+    @GetMapping("/getAllByCandidateId/{candidateId}")
+    public ResponseEntity<List<ProfessionalExperienceDto>> findProfessionalExperienceByCandidate(@PathVariable Long candidateId) {
+        List<ProfessionalExperienceDto> professionalExperienceListDto = professionalExperienceService.findProfessionalExperienceListByCandidate(candidateId);
 
-        return ResponseEntity.ok(professionalExperienceDto);
+        return ResponseEntity.ok(professionalExperienceListDto);
     }
 }

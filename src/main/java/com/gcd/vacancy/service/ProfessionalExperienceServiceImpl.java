@@ -13,6 +13,7 @@ import com.gcd.vacancy.repository.ProfessionalExperienceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -34,17 +35,22 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
     @Autowired
     private CandidateNotFoundValidation candidateValidationAlreadyExists;
 
-
     @Override
-    public void saveProfessionalExperience(Long candidateId, ProfessionalExperiencePostDto professionalExperiencePostDto) {
+    public void saveProfessionalExperience(Long candidateId, List<ProfessionalExperiencePostDto> professionalExperiencePostDtos) {
         CandidateEntity candidateEntity = candidateValidationAlreadyExists.findCandidateById(candidateId);
 
-        ProfessionalExperienceEntity professionalExperienceEntity = professionalExperienceMapper.toProfessionalExperienceEntity(professionalExperiencePostDto);
+        List<ProfessionalExperienceEntity> professionalExperienceEntities = professionalExperiencePostDtos.stream()
+                .map(professionalExperienceMapper::toProfessionalExperienceEntity)
+                .toList();
 
-        curriculumService.associateProfessionalExperienceWithCurriculum(professionalExperienceEntity, candidateEntity);
+        for (ProfessionalExperienceEntity experience : professionalExperienceEntities) {
+            curriculumService.associateProfessionalExperienceWithCurriculum(experience, candidateEntity);
+        }
 
-        professionalExperienceRepository.save(professionalExperienceEntity);
+        // Persistir apenas o candidato, que irá salvar o currículo e suas experiências
+        candidateRepository.save(candidateEntity);
     }
+
 
     @Override
     public ProfessionalExperienceDto updateProfessionalExperience(Long professionalExperienceId, ProfessionalExperienceUpdateDto professionalExperienceUpdateDto) {
@@ -74,12 +80,16 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
     }
 
     @Override
-    public ProfessionalExperienceDto findProfessionalExperienceByCandidate(Long id) {
-        ProfessionalExperienceEntity professionalExperienceEntity = professionalExperienceRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Experiência profissional com id " + id + " não encontrada."));
+    public List<ProfessionalExperienceDto> findProfessionalExperienceListByCandidate(Long candidateId) {
+        candidateValidationAlreadyExists.findCandidateById(candidateId);
 
-        return professionalExperienceMapper.toProfessionalExperienceDto(professionalExperienceEntity);
+        List<ProfessionalExperienceEntity> professionalExperienceEntities = professionalExperienceRepository.findAllByCandidateId(candidateId);
+
+        return professionalExperienceEntities.stream()
+                .map(professionalExperienceMapper::toProfessionalExperienceDto)
+                .toList();
     }
+
 
 
     private void updateFieldOrThrowIfEmpty(String newValue, String fieldName, Consumer<String> setter) {

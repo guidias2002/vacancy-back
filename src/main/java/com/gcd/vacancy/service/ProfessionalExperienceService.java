@@ -5,15 +5,17 @@ import com.gcd.vacancy.dto.ProfessionalExperiencePostDto;
 import com.gcd.vacancy.dto.ProfessionalExperienceUpdateDto;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface ProfessionalExperienceService {
 
-    void saveProfessionalExperience(Long candidateId, ProfessionalExperiencePostDto professionalExperiencePostDto);
+    void saveProfessionalExperience(Long candidateId, List<ProfessionalExperiencePostDto> professionalExperiencePostDtos);
 
     ProfessionalExperienceDto updateProfessionalExperience(Long professionalExperienceId, ProfessionalExperienceUpdateDto professionalExperienceUpdateDto);
 
     void deleteProfessionalExperience(Long professionalExperienceId);
 
-    ProfessionalExperienceDto findProfessionalExperienceByCandidate(Long candidateId);
+    List<ProfessionalExperienceDto> findProfessionalExperienceListByCandidate(Long candidateId);
 
 }
