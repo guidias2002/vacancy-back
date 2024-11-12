@@ -54,7 +54,11 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getDescription(), "description", professionalExperienceEntity::setDescription);
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getPosition(), "position", professionalExperienceEntity::setPosition);
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getEnterprise(), "enterprise", professionalExperienceEntity::setEnterprise);
-        updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getPeriod(), "period", professionalExperienceEntity::setPeriod);
+        updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getMonthStart(), "monthStart", professionalExperienceEntity::setMonthStart);
+        updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getYearStart(), "yearStart", professionalExperienceEntity::setYearStart);
+        updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getMonthEnd(), "monthEnd", professionalExperienceEntity::setMonthEnd);
+        updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getYearEnd(), "monthEnd", professionalExperienceEntity::setYearEnd);
+        updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getIsCurrentJob(), "isCurrenteJob", professionalExperienceEntity::setIsCurrentJob);
 
         professionalExperienceRepository.save(professionalExperienceEntity);
 
@@ -69,10 +73,25 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
         professionalExperienceRepository.deleteById(professionalExperienceId);
     }
 
+    @Override
+    public ProfessionalExperienceDto findProfessionalExperienceByCandidate(Long id) {
+        ProfessionalExperienceEntity professionalExperienceEntity = professionalExperienceRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Experiência profissional com id " + id + " não encontrada."));
+
+        return professionalExperienceMapper.toProfessionalExperienceDto(professionalExperienceEntity);
+    }
+
 
     private void updateFieldOrThrowIfEmpty(String newValue, String fieldName, Consumer<String> setter) {
         Optional.ofNullable(newValue)
                 .filter(value -> !value.trim().isEmpty())
+                .ifPresentOrElse(setter, () -> {
+                    throw new NullValueException("Preencha o campo " + fieldName + ".");
+                });
+    }
+
+    private void updateFieldOrThrowIfEmpty(Boolean newValue, String fieldName, Consumer<Boolean> setter) {
+        Optional.ofNullable(newValue)
                 .ifPresentOrElse(setter, () -> {
                     throw new NullValueException("Preencha o campo " + fieldName + ".");
                 });

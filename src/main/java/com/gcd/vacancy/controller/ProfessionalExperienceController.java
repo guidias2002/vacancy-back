@@ -37,4 +37,11 @@ public class ProfessionalExperienceController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProfessionalExperienceDto> findProfessionalExperienceByCandidate(@PathVariable Long id) {
+        ProfessionalExperienceDto professionalExperienceDto = professionalExperienceService.findProfessionalExperienceByCandidate(id);
+
+        return ResponseEntity.ok(professionalExperienceDto);
+    }
 }
