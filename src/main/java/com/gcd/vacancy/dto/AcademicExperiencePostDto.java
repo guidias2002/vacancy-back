@@ -16,6 +16,18 @@ public class AcademicExperiencePostDto {
     @NotBlank(message = "Campo obrigatório.")
     private String level;
 
+    @NotBlank(message = "Campo obrigatório.")
+    private String status;
+
+    @NotBlank(message = "Campo obrigatório.")
+    private String monthStart;
+
     @NotNull(message = "Campo obrigatório.")
-    private Long completion;
+    private Long yearStart;
+
+    @NotBlank(message = "Campo obrigatório.")
+    private String monthEnd;
+
+    @NotNull(message = "Campo obrigatório.")
+    private Long yearEnd;
 }

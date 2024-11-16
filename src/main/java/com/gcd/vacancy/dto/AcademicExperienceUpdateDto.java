@@ -8,6 +8,10 @@ public class AcademicExperienceUpdateDto {
     private String course;
     private String institution;
     private String level;
-    private Long completion;
+    private String status;
+    private String monthStart;
+    private Long yearStart;
+    private String monthEnd;
+    private Long yearEnd;
 
 }

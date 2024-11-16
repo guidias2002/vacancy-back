@@ -54,7 +54,12 @@ public class AcademicExperienceServiceImpl implements AcademicExperienceService 
         updateFieldOrThrowIfEmpty(academicExperienceUpdateDto.getCourse(), "course", academicExperienceEntity::setCourse);
         updateFieldOrThrowIfEmpty(academicExperienceUpdateDto.getInstitution(), "institution", academicExperienceEntity::setInstitution);
         updateFieldOrThrowIfEmpty(academicExperienceUpdateDto.getLevel(), "level", academicExperienceEntity::setLevel);
-        updateFieldOrThrowIfEmpty(academicExperienceUpdateDto.getCompletion(), "completion", academicExperienceEntity::setCompletion);
+        updateFieldOrThrowIfEmpty(academicExperienceUpdateDto.getStatus(), "status", academicExperienceEntity::setStatus);
+        updateFieldOrThrowIfEmpty(academicExperienceUpdateDto.getMonthStart(), "monthStart", academicExperienceEntity::setMonthStart);
+        updateFieldOrThrowIfEmpty(academicExperienceUpdateDto.getYearStart(), "yearStart", academicExperienceEntity::setYearStart);
+        updateFieldOrThrowIfEmpty(academicExperienceUpdateDto.getMonthEnd(), "monthEnd", academicExperienceEntity::setMonthEnd);
+        updateFieldOrThrowIfEmpty(academicExperienceUpdateDto.getYearEnd(), "yearEnd", academicExperienceEntity::setYearEnd);
+
 
         academicExperienceRepository.save(academicExperienceEntity);
 
