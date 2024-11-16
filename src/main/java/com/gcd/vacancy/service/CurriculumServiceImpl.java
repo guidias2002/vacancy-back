@@ -63,6 +63,8 @@ public class CurriculumServiceImpl {
         // Adicionar a experiência ao currículo se ainda não estiver na lista
         if (!curriculum.getProfessionalExperienceList().contains(professionalExperienceEntity)) {
             curriculum.getProfessionalExperienceList().add(professionalExperienceEntity);
+            candidate.setCurriculum(curriculum);
+            candidateRepository.save(candidate);
         }
     }
 
