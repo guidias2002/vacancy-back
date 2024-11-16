@@ -18,4 +18,6 @@ public interface ProfessionalExperienceService {
 
     List<ProfessionalExperienceDto> findProfessionalExperienceListByCandidate(Long candidateId);
 
+    void saveOrUpdateProfessionalExperiences(Long candidateId, List<ProfessionalExperiencePostDto> professionalExperiencePostDtos);
+
 }

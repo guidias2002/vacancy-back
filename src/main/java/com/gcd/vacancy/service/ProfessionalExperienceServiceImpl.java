@@ -13,6 +13,7 @@ import com.gcd.vacancy.repository.ProfessionalExperienceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -51,6 +52,50 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
         candidateRepository.save(candidateEntity);
     }
 
+    @Override
+    public void saveOrUpdateProfessionalExperiences(Long candidateId, List<ProfessionalExperiencePostDto> professionalExperiencePostDtos) {
+        CandidateEntity candidateEntity = candidateValidationAlreadyExists.findCandidateById(candidateId);
+
+        List<ProfessionalExperienceEntity> professionalExperienceEntities = new ArrayList<>();
+
+        for (ProfessionalExperiencePostDto experienceDto : professionalExperiencePostDtos) {
+            if (experienceDto.getId() != null) {
+                ProfessionalExperienceEntity existingExperience = professionalExperienceRepository.findById(experienceDto.getId())
+                        .orElseThrow(() -> new NotFoundException("Experiência profissional com id " + experienceDto.getId() + " não encontrada."));
+
+                updateFieldOrThrowIfEmpty(experienceDto.getDescription(), "description", existingExperience::setDescription);
+                updateFieldOrThrowIfEmpty(experienceDto.getPosition(), "position", existingExperience::setPosition);
+                updateFieldOrThrowIfEmpty(experienceDto.getEnterprise(), "enterprise", existingExperience::setEnterprise);
+                updateFieldOrThrowIfEmpty(experienceDto.getMonthStart(), "monthStart", existingExperience::setMonthStart);
+                updateFieldOrThrowIfEmpty(experienceDto.getYearStart(), "yearStart", existingExperience::setYearStart);
+
+                // Verifica se o trabalho não é atual antes de atualizar os campos de término
+                if (experienceDto.getIsCurrentJob() == null || !experienceDto.getIsCurrentJob()) {
+                    if (experienceDto.getMonthEnd() != null && experienceDto.getYearEnd() != null) {
+                        validateEndDateIsNotBeforeStartDate(
+                                 experienceDto.getYearStart(),
+                                experienceDto.getYearEnd()
+                        );
+                        updateFieldOrThrowIfEmpty(experienceDto.getMonthEnd(), "monthEnd", existingExperience::setMonthEnd);
+                        updateFieldOrThrowIfEmpty(experienceDto.getYearEnd(), "yearEnd", existingExperience::setYearEnd);
+                    }
+                }
+
+                // atualiza o campo isCurrentJob
+                updateFieldOrThrowIfEmpty(experienceDto.getIsCurrentJob(), "isCurrentJob", existingExperience::setIsCurrentJob);
+
+                professionalExperienceEntities.add(existingExperience);
+            } else {
+                ProfessionalExperienceEntity newExperience = professionalExperienceMapper.toProfessionalExperienceEntity(experienceDto);
+                curriculumService.associateProfessionalExperienceWithCurriculum(newExperience, candidateEntity);
+                professionalExperienceEntities.add(newExperience);
+            }
+        }
+
+        candidateRepository.save(candidateEntity);
+    }
+
+
 
     @Override
     public ProfessionalExperienceDto updateProfessionalExperience(Long professionalExperienceId, ProfessionalExperienceUpdateDto professionalExperienceUpdateDto) {
@@ -64,7 +109,7 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getYearStart(), "yearStart", professionalExperienceEntity::setYearStart);
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getMonthEnd(), "monthEnd", professionalExperienceEntity::setMonthEnd);
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getYearEnd(), "monthEnd", professionalExperienceEntity::setYearEnd);
-        updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getIsCurrentJob(), "isCurrenteJob", professionalExperienceEntity::setIsCurrentJob);
+        updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getIsCurrentJob(), "isCurrentJob", professionalExperienceEntity::setIsCurrentJob);
 
         professionalExperienceRepository.save(professionalExperienceEntity);
 
@@ -100,10 +145,24 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
                 });
     }
 
+    private void updateFieldOrThrowIfEmpty(Long newValue, String fieldName, Consumer<Long> setter) {
+        Optional.ofNullable(newValue)
+                .ifPresentOrElse(setter, () -> {
+                    throw new NullValueException("Preencha o campo " + fieldName + ".");
+                });
+    }
+
     private void updateFieldOrThrowIfEmpty(Boolean newValue, String fieldName, Consumer<Boolean> setter) {
         Optional.ofNullable(newValue)
                 .ifPresentOrElse(setter, () -> {
                     throw new NullValueException("Preencha o campo " + fieldName + ".");
                 });
     }
+
+    private void validateEndDateIsNotBeforeStartDate(Long yearStart, Long yearEnd) {
+        if (yearEnd < yearStart || (yearEnd.equals(yearStart))) {
+            throw new IllegalArgumentException("A data de término não pode ser anterior à data de início.");
+        }
+    }
+
 }

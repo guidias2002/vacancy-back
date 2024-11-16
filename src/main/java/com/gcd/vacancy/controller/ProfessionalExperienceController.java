@@ -47,4 +47,11 @@ public class ProfessionalExperienceController {
 
         return ResponseEntity.ok(professionalExperienceListDto);
     }
+
+    @PutMapping("/saveOrUpdateExperience/{candidateId}")
+    public ResponseEntity<Void> saveOrUpdateProfessionalExperiences(@PathVariable Long candidateId, @RequestBody List<ProfessionalExperiencePostDto> professionalExperiencePostDtos) {
+        professionalExperienceService.saveOrUpdateProfessionalExperiences(candidateId, professionalExperiencePostDtos);
+
+        return ResponseEntity.ok().build();
+    }
 }
