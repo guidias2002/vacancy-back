@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class ProfessionalExperiencePostDto {
 
+    private Long id;
+
     @NotBlank(message = "Campo obrigatório.")
     private String enterprise;
 
@@ -16,11 +18,11 @@ public class ProfessionalExperiencePostDto {
     private String monthStart;
 
     @NotBlank(message = "Campo obrigatório.")
-    private String yearStart;
+    private Long yearStart;
 
     private String monthEnd;
 
-    private String yearEnd;
+    private Long yearEnd;
 
     private Boolean isCurrentJob;
 

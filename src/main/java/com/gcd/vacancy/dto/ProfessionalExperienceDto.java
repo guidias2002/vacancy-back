@@ -9,9 +9,9 @@ public class ProfessionalExperienceDto {
     private String enterprise;
     private String position;
     private String monthStart;
-    private String yearStart;
+    private Long yearStart;
     private String monthEnd;
-    private String yearEnd;
+    private Long yearEnd;
     private Boolean isCurrentJob;
     private String description;
 }
