@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class AcademicExperiencePostDto {
 
+    private Long id;
+
     @NotBlank(message = "Campo obrigatório.")
     private String course;
 
