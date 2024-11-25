@@ -5,6 +5,7 @@ import com.gcd.vacancy.dto.AcademicExperiencePostDto;
 import com.gcd.vacancy.dto.AcademicExperienceUpdateDto;
 import com.gcd.vacancy.entity.AcademicExperienceEntity;
 import com.gcd.vacancy.entity.CandidateEntity;
+import com.gcd.vacancy.enums.Month;
 import com.gcd.vacancy.exceptions.customExceptions.InvalidDateFieldException;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.exceptions.customExceptions.NullValueException;
@@ -40,8 +41,8 @@ public class AcademicExperienceServiceImpl implements AcademicExperienceService 
     public void saveAcademicExperience(Long candidateId, AcademicExperiencePostDto academicExperiencePostDto) {
         CandidateEntity candidate = candidateValidationAlreadyExists.findCandidateById(candidateId);
 
-        int monthStart = Integer.parseInt(academicExperiencePostDto.getMonthStart());
-        int monthEnd = Integer.parseInt(academicExperiencePostDto.getMonthEnd());
+        int monthStart = Month.getMonthValue(academicExperiencePostDto.getMonthStart());
+        int monthEnd = Month.getMonthValue(academicExperiencePostDto.getMonthEnd());
 
         if(academicExperiencePostDto.getYearStart() > academicExperiencePostDto.getYearEnd() || (academicExperiencePostDto.getYearStart().equals(academicExperiencePostDto.getYearEnd()) && monthStart > monthEnd)) {
             throw new InvalidDateFieldException("Dados inválidos. Verifique os campos mês/ano de início/término.");
