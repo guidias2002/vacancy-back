@@ -39,4 +39,11 @@ public class AcademicExperienceController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/getAllExperienceAcademy/candidateId/{candidateId}")
+    public ResponseEntity<List<AcademicExperienceDto>> findAllExperienceAcademyByCandidateId(@PathVariable Long candidateId) {
+        List<AcademicExperienceDto> listAcademicExperience = academicExperienceService.findAllAcademicExperienceByCandidateId(candidateId);
+
+        return ResponseEntity.ok(listAcademicExperience);
+    }
 }

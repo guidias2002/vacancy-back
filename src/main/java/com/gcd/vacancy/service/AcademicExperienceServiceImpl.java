@@ -14,6 +14,7 @@ import com.gcd.vacancy.repository.AcademicExperienceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -81,6 +82,15 @@ public class AcademicExperienceServiceImpl implements AcademicExperienceService 
                 .orElseThrow(() -> new NotFoundException("Experiência acadêmica com id " + academicExperienceId + " não encontrada."));
 
         academicExperienceRepository.deleteById(academicExperienceId);
+    }
+
+    @Override
+    public List<AcademicExperienceDto> findAllAcademicExperienceByCandidateId(Long candidateId) {
+        CandidateEntity candidate = candidateValidationAlreadyExists.findCandidateById(candidateId);
+
+        List<AcademicExperienceEntity> listAcademicExperience = academicExperienceRepository.findAllByCandidateId(candidateId);
+
+        return academicExperienceMapper.toAcademicExperienceDtoList(listAcademicExperience);
     }
 
 
