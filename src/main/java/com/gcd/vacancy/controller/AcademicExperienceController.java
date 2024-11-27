@@ -46,4 +46,11 @@ public class AcademicExperienceController {
 
         return ResponseEntity.ok(listAcademicExperience);
     }
+
+    @GetMapping("/getAcademicExperienceById/{academicExperienceId}")
+    public ResponseEntity<AcademicExperienceDto> findAcademicExperienceById(@PathVariable Long academicExperienceId) {
+        AcademicExperienceDto academicExperienceDto = academicExperienceService.findAcademicExperienceById(academicExperienceId);
+
+        return ResponseEntity.ok(academicExperienceDto);
+    }
 }

@@ -17,4 +17,6 @@ public interface AcademicExperienceService {
     void deleteAcademicExperienceById(Long academicExperienceId);
 
     List<AcademicExperienceDto> findAllAcademicExperienceByCandidateId(Long candidateId);
+
+    AcademicExperienceDto findAcademicExperienceById(Long academicExperienceId);
 }

@@ -93,6 +93,14 @@ public class AcademicExperienceServiceImpl implements AcademicExperienceService 
         return academicExperienceMapper.toAcademicExperienceDtoList(listAcademicExperience);
     }
 
+    @Override
+    public AcademicExperienceDto findAcademicExperienceById(Long academicExperienceId) {
+        AcademicExperienceEntity academicExperienceEntity = academicExperienceRepository.findById(academicExperienceId)
+                .orElseThrow(() -> new NotFoundException("Experiência acadêmica com id " + academicExperienceId + " não encontrada."));
+
+        return academicExperienceMapper.toAcademicExperienceDto(academicExperienceEntity);
+    }
+
 
     // para string
     private void updateFieldOrThrowIfEmpty(String newValue, String fieldName, Consumer<String> setter) {
