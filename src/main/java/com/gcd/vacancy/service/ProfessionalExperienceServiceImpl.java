@@ -43,20 +43,24 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
         CandidateEntity candidate = candidateValidationAlreadyExists.findCandidateById(candidateId);
 
         int monthStart = Month.getMonthValue(professionalExperiencePostDto.getMonthStart());
-        int monthEnd = Month.getMonthValue(professionalExperiencePostDto.getMonthEnd());
+        Integer monthEnd = professionalExperiencePostDto.getMonthEnd() == null || professionalExperiencePostDto.getMonthEnd().trim().isEmpty()
+                ? null
+                : Month.getMonthValue(professionalExperiencePostDto.getMonthEnd());
 
-        if(professionalExperiencePostDto.getYearStart() > professionalExperiencePostDto.getYearEnd() || (professionalExperiencePostDto.getYearStart().equals(professionalExperiencePostDto.getYearEnd()) && monthStart > monthEnd)) {
-            throw new InvalidDateFieldException("Dados inválidos. Verifique os campos mês/ano de início/término.");
+
+        if (professionalExperiencePostDto.getYearEnd() != null) {
+            if (professionalExperiencePostDto.getYearStart() > professionalExperiencePostDto.getYearEnd() ||
+                    (professionalExperiencePostDto.getYearStart().equals(professionalExperiencePostDto.getYearEnd()) && monthStart > monthEnd)) {
+                throw new InvalidDateFieldException("Dados inválidos. Verifique os campos mês/ano de início/término.");
+            }
         }
 
-        Integer monthValue = Month.getMonthValue(professionalExperiencePostDto.getMonthEnd());
-
         if (professionalExperiencePostDto.getIsCurrentJob()) {
-            if (monthValue != null || (professionalExperiencePostDto.getYearEnd() != null)) {
+            if (monthEnd != null || professionalExperiencePostDto.getYearEnd() != null) {
                 throw new InvalidDateFieldException("Trabalho atual não deve ter Mês/Ano de término preenchidos.");
             }
         } else {
-            if (monthValue == null || professionalExperiencePostDto.getYearEnd() == null) {
+            if (monthEnd == null || professionalExperiencePostDto.getYearEnd() == null) {
                 throw new InvalidDateFieldException("Campos Mês/Ano de término são obrigatórios quando não é trabalho atual.");
             }
         }
