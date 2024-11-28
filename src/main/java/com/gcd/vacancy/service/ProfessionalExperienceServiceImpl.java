@@ -5,6 +5,8 @@ import com.gcd.vacancy.dto.ProfessionalExperiencePostDto;
 import com.gcd.vacancy.dto.ProfessionalExperienceUpdateDto;
 import com.gcd.vacancy.entity.CandidateEntity;
 import com.gcd.vacancy.entity.ProfessionalExperienceEntity;
+import com.gcd.vacancy.enums.Month;
+import com.gcd.vacancy.exceptions.customExceptions.InvalidDateFieldException;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.exceptions.customExceptions.NullValueException;
 import com.gcd.vacancy.mapper.ProfessionalExperienceMapper;
@@ -13,7 +15,6 @@ import com.gcd.vacancy.repository.ProfessionalExperienceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -36,71 +37,56 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
     @Autowired
     private CandidateNotFoundValidation candidateValidationAlreadyExists;
 
+
     @Override
-    public void saveProfessionalExperience(Long candidateId, List<ProfessionalExperiencePostDto> professionalExperiencePostDtos) {
-        CandidateEntity candidateEntity = candidateValidationAlreadyExists.findCandidateById(candidateId);
+    public void saveProfessionalExperience(Long candidateId, ProfessionalExperiencePostDto professionalExperiencePostDto) {
+        CandidateEntity candidate = candidateValidationAlreadyExists.findCandidateById(candidateId);
 
-        List<ProfessionalExperienceEntity> professionalExperienceEntities = professionalExperiencePostDtos.stream()
-                .map(professionalExperienceMapper::toProfessionalExperienceEntity)
-                .toList();
+        int monthStart = Month.getMonthValue(professionalExperiencePostDto.getMonthStart());
+        int monthEnd = Month.getMonthValue(professionalExperiencePostDto.getMonthEnd());
 
-        for (ProfessionalExperienceEntity experience : professionalExperienceEntities) {
-            curriculumService.associateProfessionalExperienceWithCurriculum(experience, candidateEntity);
+        if(professionalExperiencePostDto.getYearStart() > professionalExperiencePostDto.getYearEnd() || (professionalExperiencePostDto.getYearStart().equals(professionalExperiencePostDto.getYearEnd()) && monthStart > monthEnd)) {
+            throw new InvalidDateFieldException("Dados inválidos. Verifique os campos mês/ano de início/término.");
         }
 
-        // Persistir apenas o candidato, que irá salvar o currículo e suas experiências
-        candidateRepository.save(candidateEntity);
-    }
+        Integer monthValue = Month.getMonthValue(professionalExperiencePostDto.getMonthEnd());
 
-    @Override
-    public void saveOrUpdateProfessionalExperiences(Long candidateId, List<ProfessionalExperiencePostDto> professionalExperiencePostDtos) {
-        CandidateEntity candidateEntity = candidateValidationAlreadyExists.findCandidateById(candidateId);
-
-        List<ProfessionalExperienceEntity> professionalExperienceEntities = new ArrayList<>();
-
-        for (ProfessionalExperiencePostDto experienceDto : professionalExperiencePostDtos) {
-            if (experienceDto.getId() != null) {
-                ProfessionalExperienceEntity existingExperience = professionalExperienceRepository.findById(experienceDto.getId())
-                        .orElseThrow(() -> new NotFoundException("Experiência profissional com id " + experienceDto.getId() + " não encontrada."));
-
-                updateFieldOrThrowIfEmpty(experienceDto.getDescription(), "description", existingExperience::setDescription);
-                updateFieldOrThrowIfEmpty(experienceDto.getPosition(), "position", existingExperience::setPosition);
-                updateFieldOrThrowIfEmpty(experienceDto.getEnterprise(), "enterprise", existingExperience::setEnterprise);
-                updateFieldOrThrowIfEmpty(experienceDto.getMonthStart(), "monthStart", existingExperience::setMonthStart);
-                updateFieldOrThrowIfEmpty(experienceDto.getYearStart(), "yearStart", existingExperience::setYearStart);
-
-                // Verifica se o trabalho não é atual antes de atualizar os campos de término
-                if (experienceDto.getIsCurrentJob() == null || !experienceDto.getIsCurrentJob()) {
-                    if (experienceDto.getMonthEnd() != null && experienceDto.getYearEnd() != null) {
-                        validateEndDateIsNotBeforeStartDate(
-                                 experienceDto.getYearStart(),
-                                experienceDto.getYearEnd()
-                        );
-                        updateFieldOrThrowIfEmpty(experienceDto.getMonthEnd(), "monthEnd", existingExperience::setMonthEnd);
-                        updateFieldOrThrowIfEmpty(experienceDto.getYearEnd(), "yearEnd", existingExperience::setYearEnd);
-                    }
-                }
-
-                // atualiza o campo isCurrentJob
-                updateFieldOrThrowIfEmpty(experienceDto.getIsCurrentJob(), "isCurrentJob", existingExperience::setIsCurrentJob);
-
-                professionalExperienceEntities.add(existingExperience);
-            } else {
-                ProfessionalExperienceEntity newExperience = professionalExperienceMapper.toProfessionalExperienceEntity(experienceDto);
-                curriculumService.associateProfessionalExperienceWithCurriculum(newExperience, candidateEntity);
-                professionalExperienceEntities.add(newExperience);
+        if (professionalExperiencePostDto.getIsCurrentJob()) {
+            if (monthValue != null || (professionalExperiencePostDto.getYearEnd() != null)) {
+                throw new InvalidDateFieldException("Trabalho atual não deve ter Mês/Ano de término preenchidos.");
+            }
+        } else {
+            if (monthValue == null || professionalExperiencePostDto.getYearEnd() == null) {
+                throw new InvalidDateFieldException("Campos Mês/Ano de término são obrigatórios quando não é trabalho atual.");
             }
         }
 
-        candidateRepository.save(candidateEntity);
+        ProfessionalExperienceEntity professionalExperienceEntity = professionalExperienceMapper.toProfessionalExperienceEntity(professionalExperiencePostDto);
+
+        professionalExperienceRepository.save(professionalExperienceEntity);
+
+        curriculumService.associateProfessionalExperienceWithCurriculum(professionalExperienceEntity, candidate);
     }
 
+    @Override
+    public ProfessionalExperienceDto findProfessionalExperienceById(Long professionalExperienceId) {
+        ProfessionalExperienceEntity professionalExperienceEntity = professionalExperienceRepository.findById(professionalExperienceId)
+                .orElseThrow(() -> new NotFoundException("Experiência profissional com id " + professionalExperienceId + " não encontrada."));
 
+        return professionalExperienceMapper.toProfessionalExperienceDto(professionalExperienceEntity);
+    }
 
     @Override
     public ProfessionalExperienceDto updateProfessionalExperience(Long professionalExperienceId, ProfessionalExperienceUpdateDto professionalExperienceUpdateDto) {
         ProfessionalExperienceEntity professionalExperienceEntity = professionalExperienceRepository.findById(professionalExperienceId)
-                .orElseThrow(() -> new NotFoundException("Experiência profissional com id " + professionalExperienceId + " não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Experiência profissional com id " + professionalExperienceId + " não encontrada."));
+
+        int monthStart = Month.getMonthValue(professionalExperienceUpdateDto.getMonthStart());
+        int monthEnd = Month.getMonthValue(professionalExperienceUpdateDto.getMonthEnd());
+
+        if(professionalExperienceUpdateDto.getYearStart() > professionalExperienceUpdateDto.getYearEnd() || (professionalExperienceUpdateDto.getYearStart().equals(professionalExperienceUpdateDto.getYearEnd()) && monthStart > monthEnd)) {
+            throw new InvalidDateFieldException("Dados inválidos. Verifique os campos mês/ano de início/término.");
+        }
 
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getDescription(), "description", professionalExperienceEntity::setDescription);
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getPosition(), "position", professionalExperienceEntity::setPosition);

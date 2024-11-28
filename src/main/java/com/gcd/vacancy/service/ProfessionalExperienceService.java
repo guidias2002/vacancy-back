@@ -10,7 +10,9 @@ import java.util.List;
 @Service
 public interface ProfessionalExperienceService {
 
-    void saveProfessionalExperience(Long candidateId, List<ProfessionalExperiencePostDto> professionalExperiencePostDtos);
+    void saveProfessionalExperience(Long candidateId, ProfessionalExperiencePostDto professionalExperiencePostDto);
+
+    ProfessionalExperienceDto findProfessionalExperienceById(Long professionalExperienceId);
 
     ProfessionalExperienceDto updateProfessionalExperience(Long professionalExperienceId, ProfessionalExperienceUpdateDto professionalExperienceUpdateDto);
 
@@ -18,6 +20,5 @@ public interface ProfessionalExperienceService {
 
     List<ProfessionalExperienceDto> findProfessionalExperienceListByCandidate(Long candidateId);
 
-    void saveOrUpdateProfessionalExperiences(Long candidateId, List<ProfessionalExperiencePostDto> professionalExperiencePostDtos);
 
 }

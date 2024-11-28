@@ -20,9 +20,8 @@ public class ProfessionalExperienceController {
     private ProfessionalExperienceService professionalExperienceService;
 
     @PostMapping("/candidateId/{candidateId}")
-    public ResponseEntity<Void> saveProfessionalExperiences(@PathVariable Long candidateId, @Valid @RequestBody List<ProfessionalExperiencePostDto> professionalExperiencePostDtos) {
-
-        professionalExperienceService.saveProfessionalExperience(candidateId, professionalExperiencePostDtos);
+    public ResponseEntity<Void> saveProfessionalExperience(@PathVariable Long candidateId, @Valid @RequestBody ProfessionalExperiencePostDto professionalExperiencePostDto) {
+        professionalExperienceService.saveProfessionalExperience(candidateId, professionalExperiencePostDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -48,10 +47,11 @@ public class ProfessionalExperienceController {
         return ResponseEntity.ok(professionalExperienceListDto);
     }
 
-    @PutMapping("/saveOrUpdateExperience/{candidateId}")
-    public ResponseEntity<Void> saveOrUpdateProfessionalExperiences(@PathVariable Long candidateId, @RequestBody List<ProfessionalExperiencePostDto> professionalExperiencePostDtos) {
-        professionalExperienceService.saveOrUpdateProfessionalExperiences(candidateId, professionalExperiencePostDtos);
+    @GetMapping("/professionalExperienceId/{professionalExperienceId}")
+    public ResponseEntity<ProfessionalExperienceDto> findProfessionalExperienceById(@PathVariable Long professionalExperienceId) {
+        ProfessionalExperienceDto professionalExperienceDto = professionalExperienceService.findProfessionalExperienceById(professionalExperienceId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(professionalExperienceDto);
     }
+
 }
