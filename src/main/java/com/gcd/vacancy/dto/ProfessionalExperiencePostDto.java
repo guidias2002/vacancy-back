@@ -1,6 +1,7 @@
 package com.gcd.vacancy.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -17,7 +18,7 @@ public class ProfessionalExperiencePostDto {
     @NotBlank(message = "Campo obrigatório.")
     private String monthStart;
 
-    @NotBlank(message = "Campo obrigatório.")
+    @NotNull(message = "Campo obrigatório.")
     private Long yearStart;
 
     private String monthEnd;
