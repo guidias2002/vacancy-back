@@ -57,15 +57,14 @@ public class CurriculumServiceImpl {
     public void associateProfessionalExperienceWithCurriculum(ProfessionalExperienceEntity professionalExperienceEntity, CandidateEntity candidate) {
         CurriculumEntity curriculum = checkIfThereIsACurriculum(candidate);
 
-        professionalExperienceEntity.setCandidateId(candidate.getId());
         professionalExperienceEntity.setCurriculumId(curriculum.getId());
+        professionalExperienceEntity.setCandidateId(candidate.getId());
 
-        // Adicionar a experiência ao currículo se ainda não estiver na lista
-        if (!curriculum.getProfessionalExperienceList().contains(professionalExperienceEntity)) {
-            curriculum.getProfessionalExperienceList().add(professionalExperienceEntity);
-            candidate.setCurriculum(curriculum);
-            candidateRepository.save(candidate);
-        }
+        curriculum.getProfessionalExperienceList().add(professionalExperienceEntity);
+        curriculumRepository.save(curriculum);
+
+        candidate.setCurriculum(curriculum);
+        candidateRepository.save(candidate);
     }
 
 
