@@ -86,10 +86,22 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
                 .orElseThrow(() -> new NotFoundException("Experiência profissional com id " + professionalExperienceId + " não encontrada."));
 
         int monthStart = Month.getMonthValue(professionalExperienceUpdateDto.getMonthStart());
-        int monthEnd = Month.getMonthValue(professionalExperienceUpdateDto.getMonthEnd());
 
-        if(professionalExperienceUpdateDto.getYearStart() > professionalExperienceUpdateDto.getYearEnd() || (professionalExperienceUpdateDto.getYearStart().equals(professionalExperienceUpdateDto.getYearEnd()) && monthStart > monthEnd)) {
-            throw new InvalidDateFieldException("Dados inválidos. Verifique os campos mês/ano de início/término.");
+        if(professionalExperienceUpdateDto.getMonthEnd() != null) {
+            int monthEnd = Month.getMonthValue(professionalExperienceUpdateDto.getMonthEnd());
+
+            if(professionalExperienceUpdateDto.getYearStart() > professionalExperienceUpdateDto.getYearEnd() || (professionalExperienceUpdateDto.getYearStart().equals(professionalExperienceUpdateDto.getYearEnd()) && monthStart > monthEnd)) {
+                throw new InvalidDateFieldException("Dados inválidos. Verifique os campos mês/ano de início/término.");
+            }
+        }
+
+        // se atualizar o isCurrentJob para true, setar ano e mes como null
+        if(professionalExperienceUpdateDto.getIsCurrentJob()) {
+            professionalExperienceEntity.setMonthEnd(null);
+            professionalExperienceEntity.setYearEnd(null);
+        } else {
+            professionalExperienceEntity.setMonthEnd(professionalExperienceUpdateDto.getMonthEnd());
+            professionalExperienceEntity.setYearEnd(professionalExperienceUpdateDto.getYearEnd());
         }
 
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getDescription(), "description", professionalExperienceEntity::setDescription);
@@ -97,8 +109,6 @@ public class ProfessionalExperienceServiceImpl implements ProfessionalExperience
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getEnterprise(), "enterprise", professionalExperienceEntity::setEnterprise);
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getMonthStart(), "monthStart", professionalExperienceEntity::setMonthStart);
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getYearStart(), "yearStart", professionalExperienceEntity::setYearStart);
-        updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getMonthEnd(), "monthEnd", professionalExperienceEntity::setMonthEnd);
-        updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getYearEnd(), "monthEnd", professionalExperienceEntity::setYearEnd);
         updateFieldOrThrowIfEmpty(professionalExperienceUpdateDto.getIsCurrentJob(), "isCurrentJob", professionalExperienceEntity::setIsCurrentJob);
 
         professionalExperienceRepository.save(professionalExperienceEntity);
