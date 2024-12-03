@@ -43,7 +43,8 @@ public class SkillServiceImpl implements SkillService {
             throw new ResourceAlreadyExistsException("Skill " + "'" + skillPostDto.getSkill() + "'" + " já existe.");
         }
 
-        SkillEntity skillEntity = skillRepository.save(skillMapper.toSkillEntity(skillPostDto));
+        String skillValue = skillPostDto.getSkill().toLowerCase();
+        SkillEntity skillEntity = skillRepository.save(skillMapper.toSkillEntity(skillValue));
         skillEntity.setCandidateId(candidateId);
 
         curriculumService.associateSkillWithCurriculum(skillEntity, candidateEntity);
