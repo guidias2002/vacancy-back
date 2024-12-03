@@ -1,5 +1,6 @@
 package com.gcd.vacancy.service;
 
+import com.gcd.vacancy.dto.SkillDto;
 import com.gcd.vacancy.dto.SkillPostDto;
 import com.gcd.vacancy.entity.CandidateEntity;
 import com.gcd.vacancy.entity.SkillEntity;
@@ -11,6 +12,7 @@ import com.gcd.vacancy.repository.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,6 +44,7 @@ public class SkillServiceImpl implements SkillService {
         }
 
         SkillEntity skillEntity = skillRepository.save(skillMapper.toSkillEntity(skillPostDto));
+        skillEntity.setCandidateId(candidateId);
 
         curriculumService.associateSkillWithCurriculum(skillEntity, candidateEntity);
     }
@@ -52,5 +55,12 @@ public class SkillServiceImpl implements SkillService {
                 .orElseThrow(() -> new NotFoundException("Skill com id " + skillId + " não encontrada."));
 
         skillRepository.deleteById(skillId);
+    }
+
+    @Override
+    public List<SkillDto> findSkillsByCandidateId(Long candidateId) {
+        candidateValidationAlreadyExists.findCandidateById(candidateId);
+
+        return skillMapper.toSkillDtoList(skillRepository.findSkillsByCandidateId(candidateId));
     }
 }
