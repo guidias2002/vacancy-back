@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface SkillMapper {
 
-    SkillEntity toSkillEntity(SkillPostDto skillPostDto);
+    SkillEntity toSkillEntity(String skill);
 
     List<SkillDto> toSkillDtoList(List<SkillEntity> skillEntityList);
 }
