@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/language")
 public class LanguageController {
@@ -35,5 +37,12 @@ public class LanguageController {
         languageService.deleteLanguage(languageId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/getLanguagesByCandidateId/{candidateId}")
+    public ResponseEntity<List<LanguageDto>> findLanguagesByCandidateId(@PathVariable Long candidateId) {
+        List<LanguageDto> languageDtoList = languageService.findLanguagesByCandidateId(candidateId);
+
+        return ResponseEntity.ok(languageDtoList);
     }
 }

@@ -13,6 +13,7 @@ import com.gcd.vacancy.repository.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -68,6 +69,13 @@ public class LanguageServiceImpl implements LanguageService{
                 .orElseThrow(() -> new NotFoundException("Idioma com id " + languageId + " não encontrada."));
 
         languageRepository.deleteById(languageId);
+    }
+
+    @Override
+    public List<LanguageDto> findLanguagesByCandidateId(Long candidateId) {
+        candidateValidationAlreadyExists.findCandidateById(candidateId);
+
+        return languageMapper.toLanguageDtoList(languageRepository.findLanguagesByCandidateId(candidateId));
     }
 
 
