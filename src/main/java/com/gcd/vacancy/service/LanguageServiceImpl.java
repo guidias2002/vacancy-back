@@ -2,6 +2,7 @@ package com.gcd.vacancy.service;
 
 import com.gcd.vacancy.dto.LanguageDto;
 import com.gcd.vacancy.dto.LanguagePostDto;
+import com.gcd.vacancy.dto.LanguageUpdateDto;
 import com.gcd.vacancy.entity.CandidateEntity;
 import com.gcd.vacancy.entity.LanguageEntity;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
@@ -51,19 +52,6 @@ public class LanguageServiceImpl implements LanguageService{
     }
 
     @Override
-    public LanguageDto updateLanguageDto(Long languageId, LanguagePostDto languagePostDto) {
-        LanguageEntity languageEntity = languageRepository.findById(languageId)
-                .orElseThrow(() -> new NotFoundException("Idioma com id " + languageId + " não encontrado."));
-
-        updateFieldOrThrowIfEmpty(languagePostDto.getLanguage(), "language", languageEntity::setLanguage);
-        updateFieldOrThrowIfEmpty(languagePostDto.getLevel(), "level", languageEntity::setLevel);
-
-        languageRepository.save(languageEntity);
-
-        return languageMapper.toLanguageDto(languageEntity);
-    }
-
-    @Override
     public void deleteLanguage(Long languageId) {
         languageRepository.findById(languageId)
                 .orElseThrow(() -> new NotFoundException("Idioma com id " + languageId + " não encontrada."));
@@ -78,13 +66,29 @@ public class LanguageServiceImpl implements LanguageService{
         return languageMapper.toLanguageDtoList(languageRepository.findLanguagesByCandidateId(candidateId));
     }
 
+    @Override
+    public LanguageDto updateLanguage(Long languageId, LanguageUpdateDto languageUpdateDto) {
+        LanguageEntity languageEntity = languageRepository.findById(languageId)
+                .orElseThrow(() -> new NotFoundException("Idioma com id " + languageId + " não encontrada."));
 
-    private void updateFieldOrThrowIfEmpty(String newValue, String fieldName, Consumer<String> setter) {
-        Optional.ofNullable(newValue)
-                .filter(value -> !value.trim().isEmpty())
-                .ifPresentOrElse(setter, () -> {
-                    throw new NullValueException("Preencha o campo " + fieldName + ".");
-                });
+        boolean isUpdated = false;
+
+        if(languageUpdateDto.getLanguage() != null && !languageUpdateDto.getLanguage().isEmpty()) {
+            languageEntity.setLanguage(languageUpdateDto.getLanguage());
+            isUpdated = true;
+        }
+
+        if(languageUpdateDto.getLevel() != null && !languageUpdateDto.getLevel().isEmpty()) {
+            languageEntity.setLevel(languageUpdateDto.getLevel());
+            isUpdated = true;
+        }
+
+        if(isUpdated) {
+            languageRepository.save(languageEntity);
+        }
+
+        return languageMapper.toLanguageDto(languageEntity);
     }
+
 
 }
