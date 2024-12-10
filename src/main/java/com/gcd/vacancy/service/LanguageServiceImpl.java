@@ -90,5 +90,10 @@ public class LanguageServiceImpl implements LanguageService{
         return languageMapper.toLanguageDto(languageEntity);
     }
 
+    @Override
+    public Boolean existsByLanguage(String language) {
+        return languageRepository.existsByLanguageIgnoreCase(language);
+    }
+
 
 }

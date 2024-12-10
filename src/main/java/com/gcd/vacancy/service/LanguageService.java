@@ -17,4 +17,6 @@ public interface LanguageService {
     List<LanguageDto> findLanguagesByCandidateId(Long candidateId);
 
     LanguageDto updateLanguage(Long languageId, LanguageUpdateDto languageUpdateDto);
+
+    Boolean existsByLanguage(String language);
 }

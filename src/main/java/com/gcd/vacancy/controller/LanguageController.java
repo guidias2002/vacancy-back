@@ -46,4 +46,11 @@ public class LanguageController {
 
         return ResponseEntity.ok(languageDto);
     }
+
+    @GetMapping("/existsByLanguage/{language}")
+    public ResponseEntity<Boolean> existsByLanguage(@PathVariable String language) {
+        Boolean existsLanguage = languageService.existsByLanguage(language);
+
+        return ResponseEntity.ok(existsLanguage);
+    }
 }

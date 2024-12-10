@@ -14,4 +14,6 @@ public interface LanguageRepository extends JpaRepository<LanguageEntity, Long> 
     Optional<LanguageEntity> findByLanguageIgnoreCase(String language);
 
     List<LanguageEntity> findLanguagesByCandidateId(Long candidateId);
+
+    Boolean existsByLanguageIgnoreCase(String language);
 }
