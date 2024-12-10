@@ -38,4 +38,11 @@ public class SkillController {
 
         return ResponseEntity.ok(skillDtoList);
     }
+
+    @GetMapping("/existsBySkill/{skill}")
+    public ResponseEntity<Boolean> existsBySkill(@PathVariable String skill) {
+        Boolean existsSkill = skillService.existsSkill(skill);
+
+        return ResponseEntity.ok(existsSkill);
+    }
 }

@@ -64,4 +64,9 @@ public class SkillServiceImpl implements SkillService {
 
         return skillMapper.toSkillDtoList(skillRepository.findSkillsByCandidateId(candidateId));
     }
+
+    @Override
+    public Boolean existsSkill(String skill) {
+        return skillRepository.existsBySkillIgnoreCase(skill);
+    }
 }

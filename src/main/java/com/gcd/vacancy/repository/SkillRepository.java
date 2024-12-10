@@ -13,4 +13,6 @@ public interface SkillRepository extends JpaRepository<SkillEntity, Long> {
     Optional<SkillEntity> findBySkillIgnoreCase(String skill);
 
     List<SkillEntity> findSkillsByCandidateId(Long candidateId);
+
+    Boolean existsBySkillIgnoreCase(String skill);
 }

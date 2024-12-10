@@ -14,4 +14,6 @@ public interface SkillService {
     void deleteSkillById(Long skillId);
 
     List<SkillDto> findSkillsByCandidateId(Long candidateId);
+
+    Boolean existsSkill(String skill);
 }
