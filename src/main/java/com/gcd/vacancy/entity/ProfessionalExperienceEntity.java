@@ -22,6 +22,7 @@ public class ProfessionalExperienceEntity {
     private String monthEnd;
     private Long yearEnd;
     private Boolean isCurrentJob;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private Long candidateId;
     private Long curriculumId;
