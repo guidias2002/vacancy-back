@@ -77,6 +77,8 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
+            response.put("userName", enterprise.getName());
+            response.put("userId", enterprise.getId());
             response.put("accountType", enterprise.getAccountType());
             response.put("login", loginEnterpriseDto.getLoginOrEmail());
 

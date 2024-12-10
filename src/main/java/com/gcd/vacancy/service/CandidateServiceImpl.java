@@ -76,8 +76,8 @@ public class CandidateServiceImpl implements CandidateService {
             String token = tokenService.generateToken(loginCandidateDto.getLoginOrEmail());
 
             Map<String, Object> response = new HashMap<>();
-            response.put("candidateId", candidate.getId());
-            response.put("candidateName", candidate.getName());
+            response.put("userId", candidate.getId());
+            response.put("userName", candidate.getName());
             response.put("token", token);
             response.put("accountType", candidate.getAccountType());
             response.put("login", loginCandidateDto.getLoginOrEmail());
