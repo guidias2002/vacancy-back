@@ -31,9 +31,8 @@ public class RecruiterEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "enterprise_id", nullable = false)
-    private EnterpriseEntity enterprise;
+    @JoinColumn(name = "enterprise_id")
+    private Long enterpriseId;
 
     @Enumerated(EnumType.STRING)
     private final AccountType accountType = AccountType.RECRUITER;
