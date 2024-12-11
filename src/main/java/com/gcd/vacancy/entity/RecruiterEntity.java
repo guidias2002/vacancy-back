@@ -45,4 +45,8 @@ public class RecruiterEntity {
     @CreationTimestamp
     @Column(nullable = false, updatable = false, name = "created_at")
     private LocalDateTime createdAt;
+
+    @CreationTimestamp
+    @Column(nullable = false, name = "updated_at")
+    private LocalDateTime updatedAt;
 }
