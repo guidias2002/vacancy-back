@@ -1,7 +1,9 @@
 package com.gcd.vacancy.controller;
 
 import com.gcd.vacancy.dto.RecruiterDto;
+import com.gcd.vacancy.dto.RecruiterEmailAndPasswordDto;
 import com.gcd.vacancy.dto.RecruiterLoginDto;
+import com.gcd.vacancy.dto.UpdatedPasswordDto;
 import com.gcd.vacancy.entity.RecruiterEntity;
 import com.gcd.vacancy.service.RecruiterService;
 import jakarta.validation.Valid;
@@ -40,5 +42,11 @@ public class RecruiterController {
     public ResponseEntity<List<RecruiterDto>> findAllRecruitersByEnterpriseId(@PathVariable Long enterpriseId) {
 
         return ResponseEntity.ok(recruiterService.findAllRecruitersByEnterpriseId(enterpriseId));
+    }
+
+    @PostMapping("/updatePassword/{recruiterId}")
+    public ResponseEntity<RecruiterEmailAndPasswordDto> updateRecruiterPassword(@PathVariable Long recruiterId, @RequestBody UpdatedPasswordDto updatedPasswordDto) {
+
+        return ResponseEntity.ok(recruiterService.updateRecruiterPassword(recruiterId, updatedPasswordDto));
     }
 }
