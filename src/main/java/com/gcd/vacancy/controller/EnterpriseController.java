@@ -1,9 +1,6 @@
 package com.gcd.vacancy.controller;
 
-import com.gcd.vacancy.dto.EnterpriseDto;
-import com.gcd.vacancy.dto.EnterprisePostDto;
-import com.gcd.vacancy.dto.EnterpriseWithListVacanciesDto;
-import com.gcd.vacancy.dto.LoginEnterpriseDto;
+import com.gcd.vacancy.dto.*;
 import com.gcd.vacancy.service.EnterpriseService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +51,11 @@ public class EnterpriseController {
         Map<String, Object> tokenAndLogin = enterpriseService.loginEnterprise(loginEnterpriseDto);
 
         return ResponseEntity.ok(tokenAndLogin);
+    }
+
+    @PutMapping("/disableRecruiterAccount/enterpriseId/{enterpriseId}/recruiterId/{recruiterId}")
+    public ResponseEntity<RecruiterDto> disableRecruiterAccount(@PathVariable Long enterpriseId, @PathVariable Long recruiterId) {
+
+        return ResponseEntity.ok(enterpriseService.disableRecruiterAccount(enterpriseId, recruiterId));
     }
 }

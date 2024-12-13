@@ -1,20 +1,22 @@
 package com.gcd.vacancy.service;
 
-import com.gcd.vacancy.dto.EnterpriseDto;
-import com.gcd.vacancy.dto.EnterprisePostDto;
-import com.gcd.vacancy.dto.EnterpriseWithListVacanciesDto;
-import com.gcd.vacancy.dto.LoginEnterpriseDto;
+import com.gcd.vacancy.dto.*;
 import com.gcd.vacancy.entity.EnterpriseEntity;
+import com.gcd.vacancy.entity.RecruiterEntity;
+import com.gcd.vacancy.enums.RecruiterInvitationStatus;
 import com.gcd.vacancy.exceptions.customExceptions.IncorrectCredentialsException;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.exceptions.customExceptions.ResourceAlreadyExistsException;
 import com.gcd.vacancy.mapper.EnterpriseMapper;
+import com.gcd.vacancy.mapper.RecruiterMapper;
 import com.gcd.vacancy.mapper.VacancyMapper;
 import com.gcd.vacancy.repository.EnterpriseRepository;
+import com.gcd.vacancy.repository.RecruiterRepository;
 import com.gcd.vacancy.repository.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,12 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
     @Autowired
     private EnterpriseNotFoundValidation enterpriseNotFoundValidation;
+
+    @Autowired
+    private RecruiterRepository recruiterRepository;
+
+    @Autowired
+    private RecruiterMapper recruiterMapper;
 
     @Override
     public void saveEnterprise(EnterprisePostDto enterprisePostDto) {
@@ -86,6 +94,27 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         } else {
             throw new IncorrectCredentialsException("Senha incorreta.");
         }
+    }
+
+    @Override
+    public RecruiterDto disableRecruiterAccount(Long enterpriseId, Long recruiterId) {
+        EnterpriseEntity enterpriseEntity = enterpriseRepository.findById(enterpriseId)
+                .orElseThrow(() -> new NotFoundException("Empresa com id " + enterpriseId + " não encontrada."));
+
+        RecruiterEntity recruiterEntity = recruiterRepository.findById(recruiterId)
+                .orElseThrow(() -> new NotFoundException("Recrutador com id " + recruiterId + " não encontrado."));
+
+        if(!recruiterEntity.getEnterpriseId().equals(enterpriseId)) {
+            throw new NotFoundException("O usuário '" + recruiterEntity.getEmail() + "' não está na lista de recrutadores da empresa " + enterpriseEntity.getName() + ".");
+        }
+
+        if(!recruiterEntity.getInvitationStatus().equals(RecruiterInvitationStatus.DESATIVADA)) {
+            recruiterEntity.setInvitationStatus(RecruiterInvitationStatus.DESATIVADA);
+            recruiterEntity.setUpdatedAt(LocalDateTime.now());
+            recruiterRepository.save(recruiterEntity);
+        }
+
+        return recruiterMapper.toRecruiterDto(recruiterEntity);
     }
 
 

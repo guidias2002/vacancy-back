@@ -1,9 +1,6 @@
 package com.gcd.vacancy.service;
 
-import com.gcd.vacancy.dto.EnterpriseDto;
-import com.gcd.vacancy.dto.EnterprisePostDto;
-import com.gcd.vacancy.dto.EnterpriseWithListVacanciesDto;
-import com.gcd.vacancy.dto.LoginEnterpriseDto;
+import com.gcd.vacancy.dto.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,4 +18,6 @@ public interface EnterpriseService {
     List<EnterpriseDto> getAllEnterprise();
 
     Map<String, Object> loginEnterprise(LoginEnterpriseDto loginEnterpriseDto);
+
+    RecruiterDto disableRecruiterAccount(Long enterpriseId, Long recruiterId);
 }
