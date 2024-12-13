@@ -43,7 +43,7 @@ public class EmailServiceImpl implements EmailService{
                     "</body>" +
                     "</html>";
 
-            helper.setText(htmlContent, true); // O parâmetro 'true' indica que o conteúdo é HTML
+            helper.setText(htmlContent, true);
 
             javaMailSender.send(mimeMessage);
 
