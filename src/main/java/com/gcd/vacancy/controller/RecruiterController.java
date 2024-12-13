@@ -45,7 +45,7 @@ public class RecruiterController {
     }
 
     @PostMapping("/updatePassword/{recruiterId}")
-    public ResponseEntity<RecruiterEmailAndPasswordDto> updateRecruiterPassword(@PathVariable Long recruiterId, @RequestBody UpdatedPasswordDto updatedPasswordDto) {
+    public ResponseEntity<RecruiterEmailAndPasswordDto> updateRecruiterPassword(@PathVariable Long recruiterId, @Valid @RequestBody UpdatedPasswordDto updatedPasswordDto) {
 
         return ResponseEntity.ok(recruiterService.updateRecruiterPassword(recruiterId, updatedPasswordDto));
     }
