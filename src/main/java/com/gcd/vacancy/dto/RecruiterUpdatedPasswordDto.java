@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdatedPasswordDto {
+public class RecruiterUpdatedPasswordDto {
 
     @NotBlank(message = "Campo obrigatório.")
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")

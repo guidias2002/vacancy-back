@@ -3,7 +3,7 @@ package com.gcd.vacancy.service;
 import com.gcd.vacancy.dto.RecruiterDto;
 import com.gcd.vacancy.dto.RecruiterEmailAndPasswordDto;
 import com.gcd.vacancy.dto.RecruiterLoginDto;
-import com.gcd.vacancy.dto.UpdatedPasswordDto;
+import com.gcd.vacancy.dto.RecruiterUpdatedPasswordDto;
 import com.gcd.vacancy.entity.EnterpriseEntity;
 import com.gcd.vacancy.entity.RecruiterEntity;
 import com.gcd.vacancy.enums.RecruiterInvitationStatus;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RecruiterServiceImpl implements RecruiterService {
@@ -88,7 +87,7 @@ public class RecruiterServiceImpl implements RecruiterService {
     }
 
     @Override
-    public RecruiterEmailAndPasswordDto updateRecruiterPassword(Long recruiterId, UpdatedPasswordDto updatedPasswordDto) {
+    public RecruiterEmailAndPasswordDto updateRecruiterPassword(Long recruiterId, RecruiterUpdatedPasswordDto updatedPasswordDto) {
         RecruiterEntity recruiterEntity = recruiterRepository.findById(recruiterId)
                 .orElseThrow(() -> new NotFoundException("Recrutador com id " + recruiterId + " não encontrado."));
 
