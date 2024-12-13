@@ -74,4 +74,11 @@ public class RecruiterServiceImpl implements RecruiterService {
 
         return recruiterMapper.toRecruiterDtoList(recruiterRepository.findAll());
     }
+
+    @Override
+    public List<RecruiterDto> findAllRecruitersByEnterpriseId(Long enterpriseId) {
+        enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
+
+        return recruiterMapper.toRecruiterDtoList(recruiterRepository.findAllRecruiterByEnterpriseId(enterpriseId));
+    }
 }

@@ -35,4 +35,10 @@ public class RecruiterController {
 
         return ResponseEntity.ok(recruiterService.findAllRecruiters());
     }
+
+    @GetMapping("/findAllRecruitersByEnterpriseId/{enterpriseId}")
+    public ResponseEntity<List<RecruiterDto>> findAllRecruitersByEnterpriseId(@PathVariable Long enterpriseId) {
+
+        return ResponseEntity.ok(recruiterService.findAllRecruitersByEnterpriseId(enterpriseId));
+    }
 }

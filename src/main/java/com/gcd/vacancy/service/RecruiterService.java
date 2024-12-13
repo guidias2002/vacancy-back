@@ -16,4 +16,6 @@ public interface RecruiterService {
 
     List<RecruiterDto> findAllRecruiters();
 
+    List<RecruiterDto> findAllRecruitersByEnterpriseId(Long enterpriseId);
+
 }
