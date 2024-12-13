@@ -29,20 +29,12 @@ public class PasswordGenerator {
                 .mapToObj(i -> randomCharacter(ALL_CHARACTERS))
                 .forEach(password::append);
 
-        return shuffleString(password.toString());
+        return password.toString();
     }
 
     private static char randomCharacter(String characters) {
         return characters.charAt(RANDOM.nextInt(characters.length()));
     }
 
-    private static String shuffleString(String input) {
-        return IntStream.range(0, input.length())
-                .mapToObj(i -> input.charAt(RANDOM.nextInt(input.length())))
-                .collect(Collectors.toList())
-                .stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining());
-    }
 
 }
