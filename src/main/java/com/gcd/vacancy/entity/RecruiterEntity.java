@@ -25,6 +25,9 @@ public class RecruiterEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O nome é obrigatório")
+    private String name;
+
     @NotBlank(message = "O email é obrigatório")
     @Email(message = "Email inválido")
     @Column(nullable = false, unique = true)
