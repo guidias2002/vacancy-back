@@ -1,9 +1,6 @@
 package com.gcd.vacancy.service;
 
-import com.gcd.vacancy.dto.RecruiterDto;
-import com.gcd.vacancy.dto.RecruiterEmailAndPasswordDto;
-import com.gcd.vacancy.dto.RecruiterLoginDto;
-import com.gcd.vacancy.dto.RecruiterUpdatedPasswordDto;
+import com.gcd.vacancy.dto.*;
 import com.gcd.vacancy.entity.EnterpriseEntity;
 import com.gcd.vacancy.entity.RecruiterEntity;
 import com.gcd.vacancy.enums.RecruiterInvitationStatus;
@@ -34,13 +31,14 @@ public class RecruiterServiceImpl implements RecruiterService {
     private RecruiterMapper recruiterMapper;
 
     @Override
-    public RecruiterEntity saveRecruiter(String email, Long enterpriseId) {
+    public RecruiterEntity saveRecruiter(RecruiterPostDto recruiterPostDto, Long enterpriseId) {
         EnterpriseEntity enterpriseEntity = enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
 
         String password = PasswordGenerator.generatePassword(10);
 
         RecruiterEntity recruiterEntity = RecruiterEntity.builder()
-        .email(email)
+        .email(recruiterPostDto.getEmail())
+        .name(recruiterPostDto.getName())
         .password(password)
         .createdAt(LocalDateTime.now())
         .updatedAt(LocalDateTime.now())
@@ -50,7 +48,7 @@ public class RecruiterServiceImpl implements RecruiterService {
 
         recruiterRepository.save(recruiterEntity);
 
-        emailService.sendInvitationToRecruiter(email, password, "Convite de acesso à plataforma", enterpriseEntity.getName());
+        emailService.sendInvitationToRecruiter(recruiterPostDto.getEmail(), password, "Convite de acesso à plataforma", enterpriseEntity.getName());
 
         return recruiterEntity;
     }

@@ -1,9 +1,6 @@
 package com.gcd.vacancy.controller;
 
-import com.gcd.vacancy.dto.RecruiterDto;
-import com.gcd.vacancy.dto.RecruiterEmailAndPasswordDto;
-import com.gcd.vacancy.dto.RecruiterLoginDto;
-import com.gcd.vacancy.dto.RecruiterUpdatedPasswordDto;
+import com.gcd.vacancy.dto.*;
 import com.gcd.vacancy.entity.RecruiterEntity;
 import com.gcd.vacancy.service.RecruiterService;
 import jakarta.validation.Valid;
@@ -21,9 +18,9 @@ public class RecruiterController {
     private RecruiterService recruiterService;
 
     @PostMapping("/createAccount/{enterpriseId}")
-    public ResponseEntity<RecruiterEntity> saveRecruiter(@Valid @RequestBody String email, @PathVariable Long enterpriseId) {
+    public ResponseEntity<RecruiterEntity> saveRecruiter(@Valid @RequestBody RecruiterPostDto recruiterPostDto, @PathVariable Long enterpriseId) {
 
-        return ResponseEntity.ok(recruiterService.saveRecruiter(email, enterpriseId));
+        return ResponseEntity.ok(recruiterService.saveRecruiter(recruiterPostDto, enterpriseId));
     }
 
     @PostMapping("/login")
