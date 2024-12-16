@@ -19,7 +19,7 @@ public class EmailServiceImpl implements EmailService{
 
     @Async
     @Override
-    public String sendInvitationToRecruiter(String recipientEmail, String password, String subject, String enterpriseName) {
+    public String sendInvitationToRecruiter(String recipientEmail, String password, String subject, String enterpriseName, String name) {
 
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -33,11 +33,11 @@ public class EmailServiceImpl implements EmailService{
                     "<html>" +
                     "<body>" +
                     "<h1 style='color: #007bff;'>Convite de Acesso à Plataforma</h1>" +
-                    "<p>Olá,</p>" +
+                    "<p>Olá, " + name + "!</p>" +
                     "<p>Você recebeu um convite para acessar a plataforma.</p>" +
                     "<p><b>Email:</b> " + recipientEmail + "</p>" +
                     "<p><b>Senha:</b> " + password + "</p>" +
-                    "<p>Acesse pelo site: <a href='https://localhost:8080'>https://localhost:8080</a></p>" +
+                    "<p>Acesse pelo site: <a href='https://localhost:8080/recruiter/login'>https://localhost:8080/recruiter/login</a></p>" +
                     "<br>" +
                     "<p>Atenciosamente,</p>" +
                     "<p><b>Equipe "+ enterpriseName + "</b></p>" +
