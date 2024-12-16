@@ -5,13 +5,14 @@ import com.gcd.vacancy.entity.RecruiterEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface RecruiterService {
 
     RecruiterEntity saveRecruiter(RecruiterPostDto recruiterPostDto, Long enterpriseId);
 
-    String loginRecruiter(RecruiterLoginDto recruiterLoginDto);
+    Map<String, Object> loginRecruiter(RecruiterLoginDto recruiterLoginDto);
 
     List<RecruiterDto> findAllRecruiters();
 

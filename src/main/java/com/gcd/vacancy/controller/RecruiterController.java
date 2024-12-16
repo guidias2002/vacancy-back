@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/recruiter")
@@ -24,7 +25,7 @@ public class RecruiterController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginRecruiter(@Valid @RequestBody RecruiterLoginDto recruiterLoginDto) {
+    public ResponseEntity<Map<String, Object>> loginRecruiter(@Valid @RequestBody RecruiterLoginDto recruiterLoginDto) {
 
         return ResponseEntity.ok(recruiterService.loginRecruiter(recruiterLoginDto));
     }

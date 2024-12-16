@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RecruiterServiceImpl implements RecruiterService {
@@ -29,6 +31,9 @@ public class RecruiterServiceImpl implements RecruiterService {
 
     @Autowired
     private RecruiterMapper recruiterMapper;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Override
     public RecruiterEntity saveRecruiter(RecruiterPostDto recruiterPostDto, Long enterpriseId) {
@@ -48,13 +53,13 @@ public class RecruiterServiceImpl implements RecruiterService {
 
         recruiterRepository.save(recruiterEntity);
 
-        emailService.sendInvitationToRecruiter(recruiterPostDto.getEmail(), password, "Convite de acesso à plataforma", enterpriseEntity.getName());
+        emailService.sendInvitationToRecruiter(recruiterPostDto.getEmail(), password, "Convite de acesso à plataforma", enterpriseEntity.getName(), recruiterEntity.getName());
 
         return recruiterEntity;
     }
 
     @Override
-    public String loginRecruiter(RecruiterLoginDto recruiterLoginDto) {
+    public Map<String, Object> loginRecruiter(RecruiterLoginDto recruiterLoginDto) {
         RecruiterEntity recruiter = recruiterRepository.findRecruiterByEmail(recruiterLoginDto.getEmail())
                 .orElseThrow(() -> new NotFoundException("Email não encontrado"));
 
@@ -68,7 +73,17 @@ public class RecruiterServiceImpl implements RecruiterService {
             recruiterRepository.save(recruiter);
         }
 
-        return "Logado com sucesso";
+        String token = tokenService.generateToken(recruiter.getEmail());
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("token", token);
+        response.put("userName", recruiter.getName());
+        response.put("userId", recruiter.getId());
+        response.put("accountType", recruiter.getAccountType());
+        response.put("login", recruiter.getEmail());
+
+        return response;
     }
 
     @Override
