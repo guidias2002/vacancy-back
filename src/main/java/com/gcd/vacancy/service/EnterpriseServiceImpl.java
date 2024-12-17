@@ -108,8 +108,8 @@ public class EnterpriseServiceImpl implements EnterpriseService {
             throw new NotFoundException("O usuário '" + recruiterEntity.getEmail() + "' não está na lista de recrutadores da empresa " + enterpriseEntity.getName() + ".");
         }
 
-        if(!recruiterEntity.getInvitationStatus().equals(RecruiterInvitationStatus.DESATIVADA)) {
-            recruiterEntity.setInvitationStatus(RecruiterInvitationStatus.DESATIVADA);
+        if(!recruiterEntity.getInvitationStatus().equals(RecruiterInvitationStatus.INATIVO)) {
+            recruiterEntity.setInvitationStatus(RecruiterInvitationStatus.INATIVO);
             recruiterEntity.setUpdatedAt(LocalDateTime.now());
             recruiterRepository.save(recruiterEntity);
         }
