@@ -13,9 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RecruiterServiceImpl implements RecruiterService {
@@ -43,7 +42,7 @@ public class RecruiterServiceImpl implements RecruiterService {
 
         RecruiterEntity recruiterEntity = RecruiterEntity.builder()
         .email(recruiterPostDto.getEmail())
-        .name(recruiterPostDto.getName())
+        .name(capitalizeWords(recruiterPostDto.getName()))
         .password(password)
         .createdAt(LocalDateTime.now())
         .updatedAt(LocalDateTime.now())
@@ -96,7 +95,12 @@ public class RecruiterServiceImpl implements RecruiterService {
     public List<RecruiterDto> findAllRecruitersByEnterpriseId(Long enterpriseId) {
         enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
 
-        return recruiterMapper.toRecruiterDtoList(recruiterRepository.findAllRecruiterByEnterpriseId(enterpriseId));
+        List<RecruiterEntity> listReccruiter = recruiterRepository.findAllRecruiterByEnterpriseId(enterpriseId)
+                .stream()
+                .sorted(Comparator.comparing(recruiter -> getCustomOrder(recruiter.getInvitationStatus())))
+                .collect(Collectors.toList());
+
+        return recruiterMapper.toRecruiterDtoList(listReccruiter);
     }
 
     @Override
@@ -113,4 +117,23 @@ public class RecruiterServiceImpl implements RecruiterService {
 
         return recruiterMapper.toRecruiterEmailAndPasswordDto(recruiterEntity);
     }
+
+    private int getCustomOrder(RecruiterInvitationStatus status) {
+        return switch (status) {
+            case ATIVO -> 1;
+            case PENDENTE -> 2;
+            case INATIVO -> 3;
+            default -> Integer.MAX_VALUE; //
+        };
+    }
+
+    private String capitalizeWords(String name) {
+        if (name == null || name.isEmpty()) {
+            return name;
+        }
+        return Arrays.stream(name.split(" "))
+                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
+                .collect(Collectors.joining(" "));
+    }
+
 }
