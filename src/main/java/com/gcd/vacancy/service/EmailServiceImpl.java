@@ -37,7 +37,7 @@ public class EmailServiceImpl implements EmailService{
                     "<p>Você recebeu um convite para acessar a plataforma.</p>" +
                     "<p><b>Email:</b> " + recipientEmail + "</p>" +
                     "<p><b>Senha:</b> " + password + "</p>" +
-                    "<p>Acesse pelo site: <a href='https://localhost:8080/recruiter/login'>https://localhost:8080/recruiter/login</a></p>" +
+                    "<p>Acesse pelo site: <a href='http://localhost:5173/login-recruiter'>http://localhost:5173/login-recruiter</a></p>" +
                     "<br>" +
                     "<p>Atenciosamente,</p>" +
                     "<p><b>Equipe "+ enterpriseName + "</b></p>" +
