@@ -48,4 +48,10 @@ public class RecruiterController {
         return ResponseEntity.ok(recruiterService.updateRecruiterPassword(recruiterId, updatedPasswordDto));
     }
 
+    @GetMapping("findRecruiterById/{recruiterId}")
+    public ResponseEntity<RecruiterDto> findRecruiterById(@PathVariable Long recruiterId) {
+
+        return ResponseEntity.ok(recruiterService.findRecruiterById(recruiterId));
+    }
+
 }

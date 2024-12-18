@@ -118,6 +118,14 @@ public class RecruiterServiceImpl implements RecruiterService {
         return recruiterMapper.toRecruiterEmailAndPasswordDto(recruiterEntity);
     }
 
+    @Override
+    public RecruiterDto findRecruiterById(Long recruiterId) {
+        RecruiterEntity recruiterEntity = recruiterRepository.findById(recruiterId)
+                .orElseThrow(() -> new NotFoundException("Recrutador com id " + recruiterId + " não encontrado."));
+
+        return recruiterMapper.toRecruiterDto(recruiterEntity);
+    }
+
     private int getCustomOrder(RecruiterInvitationStatus status) {
         return switch (status) {
             case ATIVO -> 1;

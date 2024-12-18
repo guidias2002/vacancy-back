@@ -20,4 +20,6 @@ public interface RecruiterService {
 
     RecruiterEmailAndPasswordDto updateRecruiterPassword(Long recruiterId, RecruiterUpdatedPasswordDto updatedPasswordDto);
 
+    RecruiterDto findRecruiterById(Long recruiterId);
+
 }
