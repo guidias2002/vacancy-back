@@ -58,4 +58,11 @@ public class EnterpriseController {
 
         return ResponseEntity.ok(enterpriseService.disableRecruiterAccount(enterpriseId, recruiterId));
     }
+
+    @PutMapping("/enableRecruiterAccount/enterpriseId/{enterpriseId}/recruiterId/{recruiterId}")
+    public ResponseEntity<Void> enableRecruiterAccount(@PathVariable Long enterpriseId, @PathVariable Long recruiterId) {
+        enterpriseService.enableRecruiterAccount(enterpriseId, recruiterId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

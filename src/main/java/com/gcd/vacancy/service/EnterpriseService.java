@@ -20,4 +20,6 @@ public interface EnterpriseService {
     Map<String, Object> loginEnterprise(LoginEnterpriseDto loginEnterpriseDto);
 
     RecruiterDto disableRecruiterAccount(Long enterpriseId, Long recruiterId);
+
+    void enableRecruiterAccount(Long enterpriseId, Long recruiterId);
 }

@@ -117,6 +117,23 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         return recruiterMapper.toRecruiterDto(recruiterEntity);
     }
 
+    @Override
+    public void enableRecruiterAccount(Long enterpriseId, Long recruiterId) {
+        EnterpriseEntity enterpriseEntity = enterpriseRepository.findById(enterpriseId)
+                .orElseThrow(() -> new NotFoundException("Empresa com id " + enterpriseId + " não encontrada."));
+
+        RecruiterEntity recruiterEntity = recruiterRepository.findById(recruiterId)
+                .orElseThrow(() -> new NotFoundException("Recrutador com id " + recruiterId + " não encontrado."));
+
+        if(!recruiterEntity.getEnterpriseId().equals(enterpriseId)) {
+            throw new NotFoundException("O usuário '" + recruiterEntity.getEmail() + "' não está na lista de recrutadores da empresa " + enterpriseEntity.getName() + ".");
+        }
+
+        recruiterEntity.setInvitationStatus(RecruiterInvitationStatus.ATIVO);
+        recruiterEntity.setUpdatedAt(LocalDateTime.now());
+        recruiterRepository.save(recruiterEntity);
+    }
+
 
     private void ValidationFields(EnterprisePostDto enterprisePostDto) {
         if(enterpriseRepository.existsByEmail(enterprisePostDto.getEmail())) {
