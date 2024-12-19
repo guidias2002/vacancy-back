@@ -1,7 +1,6 @@
 package com.gcd.vacancy.service;
 
 import com.gcd.vacancy.dto.*;
-import com.gcd.vacancy.entity.RecruiterEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +9,9 @@ import java.util.Map;
 @Service
 public interface RecruiterService {
 
-    RecruiterEntity saveRecruiter(RecruiterPostDto recruiterPostDto, Long enterpriseId);
+    RecruiterDto saveRecruiterAndSendEmail(RecruiterPostDto recruiterPostDto, Long enterpriseId);
+
+    void resendEmailToRecruiter(Long recruiterId);
 
     Map<String, Object> loginRecruiter(RecruiterLoginDto recruiterLoginDto);
 

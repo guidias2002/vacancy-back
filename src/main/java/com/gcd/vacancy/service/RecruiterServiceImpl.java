@@ -7,7 +7,9 @@ import com.gcd.vacancy.enums.RecruiterInvitationStatus;
 import com.gcd.vacancy.exceptions.customExceptions.IncorrectCredentialsException;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.exceptions.customExceptions.PasswordMismatchException;
+import com.gcd.vacancy.exceptions.customExceptions.UnauthorizedUserException;
 import com.gcd.vacancy.mapper.RecruiterMapper;
+import com.gcd.vacancy.repository.EnterpriseRepository;
 import com.gcd.vacancy.repository.RecruiterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class RecruiterServiceImpl implements RecruiterService {
     private RecruiterRepository recruiterRepository;
 
     @Autowired
+    private EnterpriseRepository enterpriseRepository;
+
+    @Autowired
     private EmailService emailService;
 
     @Autowired
@@ -34,8 +39,9 @@ public class RecruiterServiceImpl implements RecruiterService {
     @Autowired
     private TokenService tokenService;
 
+
     @Override
-    public RecruiterEntity saveRecruiter(RecruiterPostDto recruiterPostDto, Long enterpriseId) {
+    public RecruiterDto saveRecruiterAndSendEmail(RecruiterPostDto recruiterPostDto, Long enterpriseId) {
         EnterpriseEntity enterpriseEntity = enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
 
         String password = PasswordGenerator.generatePassword(10);
@@ -54,7 +60,18 @@ public class RecruiterServiceImpl implements RecruiterService {
 
         emailService.sendInvitationToRecruiter(recruiterPostDto.getEmail(), password, "Convite de acesso à plataforma", enterpriseEntity.getName(), recruiterEntity.getName());
 
-        return recruiterEntity;
+        return recruiterMapper.toRecruiterDto(recruiterEntity);
+    }
+
+    @Override
+    public void resendEmailToRecruiter(Long recruiterId) {
+        RecruiterEntity recruiterEntity = recruiterRepository.findById(recruiterId)
+                .orElseThrow(() -> new NotFoundException("Recrutador com id " + recruiterId + " não encontrado."));
+
+        EnterpriseEntity enterpriseEntity = enterpriseRepository.findById(recruiterEntity.getEnterpriseId())
+                        .orElseThrow(() -> new NotFoundException("Empresa com id " + recruiterEntity.getEnterpriseId() + " não encontrada."));
+
+        emailService.sendInvitationToRecruiter(recruiterEntity.getEmail(), recruiterEntity.getPassword(), "Convite de acesso à plataforma", enterpriseEntity.getName(), recruiterEntity.getName());
     }
 
     @Override
@@ -64,6 +81,10 @@ public class RecruiterServiceImpl implements RecruiterService {
 
         if(!recruiterLoginDto.getPassword().equals(recruiter.getPassword())) {
             throw new IncorrectCredentialsException("Credenciais incorretas.");
+        }
+
+        if(recruiter.getInvitationStatus().equals(RecruiterInvitationStatus.INATIVO)) {
+            throw new UnauthorizedUserException("O usuário com email " + recruiter.getEmail() + " está inativo.");
         }
 
         if(recruiter.getInvitationStatus().equals(RecruiterInvitationStatus.PENDENTE)) {

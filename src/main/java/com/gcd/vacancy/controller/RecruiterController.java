@@ -5,6 +5,7 @@ import com.gcd.vacancy.entity.RecruiterEntity;
 import com.gcd.vacancy.service.RecruiterService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,9 @@ public class RecruiterController {
     private RecruiterService recruiterService;
 
     @PostMapping("/createAccount/{enterpriseId}")
-    public ResponseEntity<RecruiterEntity> saveRecruiter(@Valid @RequestBody RecruiterPostDto recruiterPostDto, @PathVariable Long enterpriseId) {
+    public ResponseEntity<RecruiterDto> saveRecruiterAndSendEmail(@Valid @RequestBody RecruiterPostDto recruiterPostDto, @PathVariable Long enterpriseId) {
 
-        return ResponseEntity.ok(recruiterService.saveRecruiter(recruiterPostDto, enterpriseId));
+        return ResponseEntity.ok(recruiterService.saveRecruiterAndSendEmail(recruiterPostDto, enterpriseId));
     }
 
     @PostMapping("/login")
@@ -54,4 +55,10 @@ public class RecruiterController {
         return ResponseEntity.ok(recruiterService.findRecruiterById(recruiterId));
     }
 
+    @PostMapping("/resendEmailtoRecruiter/{recruiterId}")
+    public ResponseEntity<Void> resendEmailToRecruiter(@PathVariable Long recruiterId) {
+        recruiterService.resendEmailToRecruiter(recruiterId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
