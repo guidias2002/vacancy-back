@@ -1,5 +1,6 @@
 package com.gcd.vacancy.service;
 
+import com.gcd.vacancy.dto.VacancyBasicInformationDto;
 import com.gcd.vacancy.dto.VacancyDto;
 import com.gcd.vacancy.dto.VacancyPostDto;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,7 @@ public interface VacancyService {
 
     VacancyDto getVacancyById(Long vacancyId);
 
-    List<VacancyDto> getVacancyByEnterpriseId(Long id);
+    List<VacancyDto> getVacancyByEnterpriseIdAllInformation(Long enterpriseId);
+
+    List<VacancyBasicInformationDto> getVacancyByEnterpriseIdBasicInformation(Long enterpriseId);
 }

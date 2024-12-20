@@ -1,5 +1,6 @@
 package com.gcd.vacancy.service;
 
+import com.gcd.vacancy.dto.VacancyBasicInformationDto;
 import com.gcd.vacancy.dto.VacancyDto;
 import com.gcd.vacancy.dto.VacancyPostDto;
 import com.gcd.vacancy.entity.EnterpriseEntity;
@@ -8,6 +9,7 @@ import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.mapper.VacancyMapper;
 import com.gcd.vacancy.repository.EnterpriseRepository;
 import com.gcd.vacancy.repository.VacancyRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,11 +56,18 @@ public class VacancyServiceImpl implements VacancyService{
     }
 
     @Override
-    public List<VacancyDto> getVacancyByEnterpriseId(Long enterpriseId) {
+    @Transactional
+    public List<VacancyDto> getVacancyByEnterpriseIdAllInformation(Long enterpriseId) {
         enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
 
-        return vacancyMapper.toListVacancyDto(vacancyRepository.findByEnterpriseId(enterpriseId));
+        return vacancyMapper.toListVacancyDto(vacancyRepository.findVacancyByEnterpriseId(enterpriseId));
     }
 
+    @Override
+    @Transactional
+    public List<VacancyBasicInformationDto> getVacancyByEnterpriseIdBasicInformation(Long enterpriseId) {
+        enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
 
+        return vacancyMapper.toListVacancyBasicInformationDto(vacancyRepository.findVacancyByEnterpriseId(enterpriseId));
+    }
 }

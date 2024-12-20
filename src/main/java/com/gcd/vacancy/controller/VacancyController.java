@@ -1,5 +1,6 @@
 package com.gcd.vacancy.controller;
 
+import com.gcd.vacancy.dto.VacancyBasicInformationDto;
 import com.gcd.vacancy.dto.VacancyDto;
 import com.gcd.vacancy.dto.VacancyPostDto;
 import com.gcd.vacancy.service.VacancyService;
@@ -27,22 +28,25 @@ public class VacancyController {
 
     @GetMapping("/getAll")
     public ResponseEntity<List<VacancyDto>> getAllVacancy() {
-        List<VacancyDto> vacancyDtoList = vacancyService.getAllVacancy();
 
-        return ResponseEntity.ok(vacancyDtoList);
+        return ResponseEntity.ok(vacancyService.getAllVacancy());
     }
 
-    @GetMapping("/enterpriseId/{enterpriseId}")
-    public ResponseEntity<List<VacancyDto>> getListVacancyByEntepriseId(@PathVariable Long enterpriseId) {
-        List<VacancyDto> listVacancy = vacancyService.getVacancyByEnterpriseId(enterpriseId);
+    @GetMapping("/findVacancyByEnterpriseId/allInformation/{enterpriseId}")
+    public ResponseEntity<List<VacancyDto>> getListVacancyByEnterpriseIdAllInformation(@PathVariable Long enterpriseId) {
 
-        return ResponseEntity.ok(listVacancy);
+        return ResponseEntity.ok(vacancyService.getVacancyByEnterpriseIdAllInformation(enterpriseId));
+    }
+
+    @GetMapping("/findVacancyByEnterpriseId/basicInformation/{enterpriseId}")
+    public ResponseEntity<List<VacancyBasicInformationDto>> getListVacancyByEnterpriseIdBasicInformation(@PathVariable Long enterpriseId) {
+
+        return ResponseEntity.ok(vacancyService.getVacancyByEnterpriseIdBasicInformation(enterpriseId));
     }
 
     @GetMapping("/{vacancyId}")
     public ResponseEntity<VacancyDto> getVacancyById(@PathVariable Long vacancyId) {
-        VacancyDto vacancyDto = vacancyService.getVacancyById(vacancyId);
 
-        return ResponseEntity.ok(vacancyDto);
+        return ResponseEntity.ok(vacancyService.getVacancyById(vacancyId));
     }
 }
