@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface VacancyRepository extends JpaRepository<VacancyEntity, Long> {
 
-    List<VacancyEntity> findByEnterpriseId(Long enterpriseId);
+    List<VacancyEntity> findVacancyByEnterpriseId(Long enterpriseId);
 }
