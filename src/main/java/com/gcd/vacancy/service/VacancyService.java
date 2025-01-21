@@ -13,7 +13,7 @@ public interface VacancyService {
 
     void saveVacancy(Long enterpriseId, VacancyPostDto vacancyPostDto);
 
-    List<VacancyDto> getAllVacancy();
+    List<VacancyDto> getAllVacancyByStatusActive();
 
     VacancyDto getVacancyById(Long vacancyId);
 

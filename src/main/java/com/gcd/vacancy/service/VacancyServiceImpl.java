@@ -5,6 +5,7 @@ import com.gcd.vacancy.dto.VacancyDto;
 import com.gcd.vacancy.dto.VacancyPostDto;
 import com.gcd.vacancy.entity.EnterpriseEntity;
 import com.gcd.vacancy.entity.VacancyEntity;
+import com.gcd.vacancy.enums.VacancyStatus;
 import com.gcd.vacancy.exceptions.customExceptions.NotFoundException;
 import com.gcd.vacancy.mapper.VacancyMapper;
 import com.gcd.vacancy.repository.EnterpriseRepository;
@@ -44,9 +45,10 @@ public class VacancyServiceImpl implements VacancyService{
     }
 
     @Override
-    public List<VacancyDto> getAllVacancy() {
+    @Transactional
+    public List<VacancyDto> getAllVacancyByStatusActive() {
 
-        return vacancyMapper.toListVacancyDto(vacancyRepository.findAll());
+        return vacancyMapper.toListVacancyDto(vacancyRepository.findByStatus(VacancyStatus.ACTIVE));
     }
 
     @Override

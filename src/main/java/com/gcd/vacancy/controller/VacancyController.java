@@ -26,10 +26,10 @@ public class VacancyController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllByActive")
     public ResponseEntity<List<VacancyDto>> getAllVacancy() {
 
-        return ResponseEntity.ok(vacancyService.getAllVacancy());
+        return ResponseEntity.ok(vacancyService.getAllVacancyByStatusActive());
     }
 
     @GetMapping("/findVacancyByEnterpriseId/allInformation/{enterpriseId}")
