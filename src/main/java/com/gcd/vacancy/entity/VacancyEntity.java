@@ -1,5 +1,6 @@
 package com.gcd.vacancy.entity;
 
+import com.gcd.vacancy.enums.VacancyStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,6 +34,9 @@ public class VacancyEntity {
 
     @Column(nullable = false)
     private String modality;
+
+    @Enumerated(EnumType.STRING)
+    private VacancyStatus status;
 
     @Lob
     @Column(nullable = false)

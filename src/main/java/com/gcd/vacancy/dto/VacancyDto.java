@@ -1,5 +1,6 @@
 package com.gcd.vacancy.dto;
 
+import com.gcd.vacancy.enums.VacancyStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ public class VacancyDto {
     private Long id;
     private String title;
     private String name_enterprise;
+    private String status;
     private String level;
     private String remuneration;
     private String modality;

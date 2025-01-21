@@ -11,6 +11,7 @@ public class VacancyBasicInformationDto {
     private String title;
     private String name_enterprise;
     private String level;
+    private String status;
     private String remuneration;
     private String modality;
     private String description;
