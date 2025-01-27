@@ -13,6 +13,7 @@ import com.gcd.vacancy.mapper.VacancyMapper;
 import com.gcd.vacancy.repository.EnterpriseRepository;
 import com.gcd.vacancy.repository.RecruiterRepository;
 import com.gcd.vacancy.repository.VacancyRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +57,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         enterpriseRepository.save(newEnterprise);
     }
 
+    @Transactional
     @Override
     public EnterpriseDto getEnterpriseById(Long enterpriseId) {
         EnterpriseEntity enterprise = enterpriseNotFoundValidation.findEnterpriseById(enterpriseId);
